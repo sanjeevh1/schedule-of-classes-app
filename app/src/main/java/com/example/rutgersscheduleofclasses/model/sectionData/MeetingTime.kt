@@ -1,6 +1,7 @@
 package com.example.rutgersscheduleofclasses.model.sectionData
 import kotlinx.serialization.Serializable
 
+//A data class to describe the times when a section meets
 @Serializable
 data class MeetingTime(
     val campusLocation: String?,

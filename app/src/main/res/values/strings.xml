@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Rutgers Schedule of Classes</string>
+    <string name="url">https://sis.rutgers.edu/soc/api/courses.json?year=%s&amp;term=%s\&amp;campus=%s</string>
 </resources>

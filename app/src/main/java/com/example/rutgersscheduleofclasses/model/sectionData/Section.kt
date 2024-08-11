@@ -1,6 +1,9 @@
 package com.example.rutgersscheduleofclasses.model.sectionData
+import com.example.rutgersscheduleofclasses.model.CampusLocation
 import kotlinx.serialization.Serializable
 
+
+//A data class containing the information for a section of a course
 @Serializable
 data class Section(
     val sectionEligibility: String?,
@@ -26,7 +29,7 @@ data class Section(
     val minors: List<Minor?>?,
     val examCodeText: String?,
     val campusCode: String?,
-    val sectionCampusLocations: List<SectionCampusLocation?>?,
+    val sectionCampusLocations: List<CampusLocation?>?,
     val index: String?,
     val unitMajors: List<UnitMajor?>?,
     val printed: String?,
