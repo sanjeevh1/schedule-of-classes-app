@@ -1,5 +1,8 @@
 package com.example.rutgersscheduleofclasses.model.sectionData
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CrossListedSection(
     val courseNumber: String?,
     val supplementCode: String?,

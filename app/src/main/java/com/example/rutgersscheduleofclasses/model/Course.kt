@@ -1,7 +1,9 @@
 package com.example.rutgersscheduleofclasses.model
 
 import com.example.rutgersscheduleofclasses.model.sectionData.Section
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Course(
     val campusLocations: List<CampusLocation?>?,
     val subject: String?,

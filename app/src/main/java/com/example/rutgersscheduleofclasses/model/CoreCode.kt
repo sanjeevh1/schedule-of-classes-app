@@ -1,5 +1,7 @@
 package com.example.rutgersscheduleofclasses.model
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CoreCode(
     val id: String?,
     val year: String?,
