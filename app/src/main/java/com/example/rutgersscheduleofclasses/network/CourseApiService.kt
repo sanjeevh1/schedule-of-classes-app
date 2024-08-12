@@ -8,5 +8,5 @@ import retrofit2.http.Url
 interface CourseApiService {
     //returns a list of courses from the API
     @GET
-    suspend fun getCourses(@Url url: String): List<Course>
+    suspend fun getCourses(): List<Course>
 }
