@@ -10,12 +10,12 @@ class CoursesViewModel : ViewModel() {
     val year: String? = null
     val term: String? = null
     val campus: String? = null
+    val level: String? = null
     val subject: Subject? = null
     var courses: List<Course>? = emptyList()
 
     /**
-     *returns list of courses based on given parameters
-     *returns null if at least one parameter is null
+     *sets this.courses based on other parameters
      **/
     suspend fun setCourses() {
         if(year != null && term != null && campus != null && subject != null) {
@@ -26,7 +26,7 @@ class CoursesViewModel : ViewModel() {
             )
             val unfilteredList: List<Course> = appContainer.courseRepository.getCourses()
             courses = unfilteredList.filter { course ->
-                course.subject == this.subject.code
+                course.subject == this.subject.code && course.level == this.level
             }
             if(courses!!.isEmpty()) {
                 courses = null
@@ -34,7 +34,8 @@ class CoursesViewModel : ViewModel() {
         }
     }
 
+    //returns true if courses can be retrieved based on given parameters, and false otherwise
     fun hasValidInput(): Boolean {
-        return year == null || term == null || campus == null || subject == null
+        return year == null || term == null || campus == null || level == null || subject == null
     }
 }

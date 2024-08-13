@@ -20,7 +20,7 @@ data class Course(
     val expandedTitle: String?,
     val mainCampus: String?,
     val subjectNotes: String?,
-    val courseNumber: String?,
+    val courseNumber: String,
     val creditsObject: CreditsObject?,
     val level: String?,
     val campusCode: String?,
@@ -28,7 +28,7 @@ data class Course(
     val offeringUnitCode: String?,
     val offeringUnitTitle: String?,
     val courseDescription: String?,
-    val sections: List<Section?>?,
+    val sections: List<Section>,
     val supplementCode: String?,
     val unitNotes: String?,
     val courseNotes: String?
