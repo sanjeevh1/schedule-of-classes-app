@@ -1,28 +1,3 @@
 <resources>
     <string name="app_name">Rutgers Schedule of Classes</string>
-
-    <!--terms-->
-    <string name="term_1">Spring</string>
-    <string name="term_7">Summer</string>
-    <string name="term_9">Fall</string>
-    <string name="term_0">Winter</string>
-
-    <!--campuses-->
-    <string name="campus_NB">New Brunswick</string>
-    <string name="campus_NK">Newark</string>
-    <string name="campus_CM">Camden</string>
-    <string name="campus_ONLINE_NB">New Brunswick - Online and Remote Instruction Courses</string>
-    <string name="campus_ONLINE_NK">Newark - Online and Remote Instruction Courses"</string>
-    <string name="campus_ONLINE_CM">Camden - Online and Remote Instruction Courses"</string>
-    <string name="campus_B">Burlington County Community College - Mt Laurel</string>
-    <string name="campus_CC">Camden County College - Blackwood Campus</string>
-    <string name="campus_H">County College of Morris</string>
-    <string name="campus_CU">Cumberland County College</string>
-    <string name="campus_MC">Denville - RU-Morris</string>
-    <string name="campus_WM">Freehold WMHEC - RU-BCC</string>
-    <string name="campus_L">Lincroft - RU-BCC</string>
-    <string name="campus_AC">Mays Landing - RU-ACCC</string>
-    <string name="campus_J">McGuire-Dix-Lakehurst RU-JBMDL</string>
-    <string name="campus_D">Mercer County Community College</string>
-    <string name="campus_RV">North Branch - RU-RVCC</string>
 </resources>

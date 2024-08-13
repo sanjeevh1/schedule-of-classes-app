@@ -1,16 +1,9 @@
 package com.example.rutgersscheduleofclasses.model.sectionData
+import com.example.rutgersscheduleofclasses.data.Repository.daysOfTheWeek
 import kotlinx.serialization.Serializable
 
-val daysOfTheWeek = mapOf<String,String>(
-    "U" to "Sunday",
-    "M" to "Monday",
-    "T" to "Tuesday",
-    "W" to "Wednesday",
-    "H" to "Thursday",
-    "R" to "Thursday",
-    "F" to "Friday",
-    "S" to "Saturday"
-)
+//Maps character representations to days of the week
+
 
 //A data class to describe the times when a section meets
 @Serializable
@@ -30,6 +23,7 @@ data class MeetingTime(
     val startTime: String,
     val endTime: String
 ) {
+    //Returns a string representation of the meeting time
     override fun toString(): String {
         if (meetingDay == "") {
             return ""
