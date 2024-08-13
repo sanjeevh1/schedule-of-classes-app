@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
@@ -24,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.rutgersscheduleofclasses.model.Course
 import com.example.rutgersscheduleofclasses.model.sectionData.Section
@@ -58,8 +61,32 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 //A box displaying the information for a given section
 @Composable
 fun SectionBox(section: Section, modifier: Modifier = Modifier) {
-    Box() {
-
+    Box(
+        modifier = modifier
+            .background(
+                color = colorResource(id =
+                    if (section.openStatus) {
+                        R.color.green
+                    } else {
+                        R.color.scarlet
+                    }
+                )
+            )
+            .fillMaxWidth()
+    ) {
+        Column() {
+            Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(text = section.number)
+                Text(text = section.openStatusText)
+            }
+            Text(text = "section: ${section.index}")
+            Text(text = "instructors: ${section.instructorsText}")
+            //add meeting times
+            Text(text = "meeting times:")
+            for (meetingTime in section.meetingTimes) {
+                Text(text = meetingTime.toString())
+            }
+        }
     }
 }
 
