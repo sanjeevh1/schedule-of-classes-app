@@ -78,8 +78,9 @@ fun CourseCard(course: Course, modifier: Modifier = Modifier) {
                     )
                 }
             }
+            Text(text = course.title)
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "credits: ${course.credits}")
+                Text(text = course.creditsObject.description)
                 Text(text = "sections: ${course.openSections}/${course.sections.size}")
             }
             if(showSections) {
