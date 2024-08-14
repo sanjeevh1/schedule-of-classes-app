@@ -1,40 +1,97 @@
 package com.example.rutgersscheduleofclasses.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.rutgersscheduleofclasses.data.DefaultAppContainer
 import com.example.rutgersscheduleofclasses.model.Course
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 //A class to store the UI state (which courses should be shown)
 class CoursesViewModel : ViewModel() {
-    val year: String? = null
-    val term: String? = null
-    val campus: String? = null
-    val level: String? = null
-    val subject: String? = null
-    var courses: List<Course>? = emptyList()
+    private val _uiState = MutableStateFlow(CoursesUiState())
+    val uiState: StateFlow<CoursesUiState> = _uiState.asStateFlow()
 
     /**
      *sets this.courses based on other parameters
      **/
-    suspend fun setCourses() {
-        if(year != null && term != null && campus != null && level != null && subject != null) {
+    fun setCourses() {
+        _uiState.update { currentState ->
+            currentState.copy(showCourses = true)
+        }
+        if (hasValidInput()) {
             val appContainer = DefaultAppContainer(
-                year = year,
-                term = term,
-                campus = campus
+                year = _uiState.value.year!!,
+                term = _uiState.value.term!!,
+                campus = _uiState.value.campus!!
             )
-            val unfilteredList: List<Course> = appContainer.courseRepository.getCourses()
-            courses = unfilteredList.filter { course ->
-                course.subject == this.subject && course.level == this.level
-            }
-            if(courses!!.isEmpty()) {
-                courses = null
+            viewModelScope.launch {
+                val unfilteredList: List<Course> = try {
+                    appContainer.courseRepository.getCourses()
+                } catch (e: Exception) {
+                    emptyList<Course>()
+                }
+                _uiState.update { currentState ->
+                    currentState.copy( courses =
+                        unfilteredList.filter { course ->
+                            course.subject == _uiState.value.subject
+                                    && course.level == _uiState.value.level
+                        }
+                    )
+                }
+                if (_uiState.value.courses!!.isEmpty()) {
+                    _uiState.update { currentState ->
+                        currentState.copy(courses = null)
+                    }
+                }
             }
         }
     }
 
     //returns true if courses can be retrieved based on given parameters, and false otherwise
     fun hasValidInput(): Boolean {
-        return year == null || term == null || campus == null || level == null || subject == null
+        return _uiState.value.year != null
+                && _uiState.value.term != null
+                && _uiState.value.campus != null
+                && _uiState.value.level != null
+                && _uiState.value.subject == null
+    }
+
+    //updates uiState.year to year
+    fun updateYear(year: String) {
+        _uiState.update { currentState ->
+            currentState.copy(year = year)
+        }
+    }
+
+    //updates uiState.term to term
+    fun updateTerm(term: String) {
+        _uiState.update { currentState ->
+            currentState.copy(term = term)
+        }
+    }
+
+    //updates uiState.campus to campus
+    fun updateCampus(campus: String) {
+        _uiState.update { currentState ->
+            currentState.copy(campus = campus)
+        }
+    }
+
+    //updates uiState.level to level
+    fun updateLevel(level: String) {
+        _uiState.update { currentState ->
+            currentState.copy(level = level)
+        }
+    }
+
+    //updates uiState.subject to subject
+    fun updateSubject(subject: String) {
+        _uiState.update { currentState ->
+            currentState.copy(subject = subject)
+        }
     }
 }
