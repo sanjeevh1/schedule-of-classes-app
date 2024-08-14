@@ -29,23 +29,18 @@ class CoursesViewModel : ViewModel() {
                 campus = _uiState.value.campus!!
             )
             viewModelScope.launch {
-                val unfilteredList: List<Course> = try {
+                val unfilteredList: List<Course>? = try {
                     appContainer.courseRepository.getCourses()
                 } catch (e: Exception) {
-                    emptyList<Course>()
+                    null
                 }
                 _uiState.update { currentState ->
                     currentState.copy( courses =
-                        unfilteredList.filter { course ->
+                        unfilteredList?.filter { course ->
                             course.subject == _uiState.value.subject
                                     && course.level == _uiState.value.level
                         }
                     )
-                }
-                if (_uiState.value.courses!!.isEmpty()) {
-                    _uiState.update { currentState ->
-                        currentState.copy(courses = null)
-                    }
                 }
             }
         }

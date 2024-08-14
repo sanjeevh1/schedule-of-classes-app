@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -41,6 +42,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.rutgersscheduleofclasses.data.Repository.campuses
 import com.example.rutgersscheduleofclasses.data.Repository.levels
 import com.example.rutgersscheduleofclasses.data.Repository.subjects
@@ -110,7 +112,7 @@ fun SectionBox(section: Section, modifier: Modifier = Modifier) {
 @Composable
 fun CourseCard(course: Course, modifier: Modifier = Modifier) {
     var showSections by rememberSaveable { mutableStateOf(false) }
-    Card() {
+    Card(modifier = modifier) {
         Column() {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(text = course.courseNumber)
@@ -192,6 +194,7 @@ fun Prompt(
     }
 }
 
+//returns a map of every year as a string to itself
 fun getYearMap(): Map<String,String> {
     var map = mutableMapOf<String,String>()
     for (year in 2021..Calendar.getInstance().get(Calendar.YEAR) + 1) {
@@ -205,7 +208,7 @@ fun getYearMap(): Map<String,String> {
 fun PromptCard(coursesViewModel: CoursesViewModel, modifier: Modifier = Modifier) {
     val coursesUiState by coursesViewModel.uiState.collectAsState()
 
-    Card() {
+    Card(modifier = modifier) {
         Column() {
             Prompt(
                 label = "Year",
@@ -261,9 +264,39 @@ fun PromptCard(coursesViewModel: CoursesViewModel, modifier: Modifier = Modifier
             Button(
                 onClick = {
                     coursesViewModel.setCourses()
-                }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
             ) {
                 Text(text = "Search")
+            }
+        }
+    }
+}
+
+//Displays the prompt and results
+@Composable
+fun ScheduleOfCoursesApp(coursesViewModel: CoursesViewModel = viewModel()) {
+    val coursesUiState = coursesViewModel.uiState.collectAsState().value
+    val courses : List<Course>? = coursesUiState.courses
+    LazyColumn() {
+        item {
+            PromptCard(coursesViewModel)
+        }
+        if (courses == null) {
+            item {
+                Text(text = "Please enter all fields")
+            }
+        }
+        else if (courses.isEmpty() && coursesUiState.showCourses) {
+            item {
+                Text(text = "No courses found")
+            }
+        }
+        else {
+            items(courses.size) { index ->
+                CourseCard(course = courses[index])
             }
         }
     }
