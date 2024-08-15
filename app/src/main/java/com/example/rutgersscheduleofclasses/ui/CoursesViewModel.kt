@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rutgersscheduleofclasses.data.DefaultAppContainer
 import com.example.rutgersscheduleofclasses.model.Course
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 //A class to store the UI state (which courses should be shown)
 class CoursesViewModel : ViewModel() {
@@ -23,24 +25,26 @@ class CoursesViewModel : ViewModel() {
             currentState.copy(showCourses = true)
         }
         if (hasValidInput()) {
-            val appContainer = DefaultAppContainer(
-                year = _uiState.value.year!!,
-                term = _uiState.value.term!!,
-                campus = _uiState.value.campus!!
-            )
+            val appContainer = DefaultAppContainer()
             viewModelScope.launch {
                 val unfilteredList: List<Course> = try {
-                    appContainer.courseRepository.getCourses()
+                    appContainer.courseRepository.getCourses(
+                        year = _uiState.value.year!!,
+                        term = _uiState.value.term!!,
+                        campus = _uiState.value.campus!!
+                    )
                 } catch (e: Exception) {
                     emptyList()
                 }
-                _uiState.update { currentState ->
-                    currentState.copy( courses =
+                withContext(Dispatchers.Main) {
+                    _uiState.update { currentState ->
+                        currentState.copy(courses =
                         unfilteredList.filter { course ->
                             course.subject == _uiState.value.subject
                                     && course.level == _uiState.value.level
                         }
-                    )
+                        )
+                    }
                 }
             }
         }
@@ -52,7 +56,7 @@ class CoursesViewModel : ViewModel() {
                 && _uiState.value.term != null
                 && _uiState.value.campus != null
                 && _uiState.value.level != null
-                && _uiState.value.subject == null
+                && _uiState.value.subject != null
     }
 
     //updates uiState.year to year

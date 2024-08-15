@@ -12,20 +12,14 @@ interface AppContainer {
 }
 
 //Class for the DefaultAppContainer
-class DefaultAppContainer(
-    val year: String,
-    val term: String,
-    val campus: String
-) : AppContainer {
+class DefaultAppContainer() : AppContainer {
     //Format string for url to course list
-    private val baseUrl = "https://classes.rutgers.edu//soc/api/courses.json?year=%s&term=%s&campus=%s"
-    //Url formatted with year, term and campus
-    private val url = baseUrl.format(year, term, campus)
+    private val baseUrl = "https://classes.rutgers.edu/"
 
     //Retrofit object used to parse JSON data
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-        .baseUrl(url)
+        .baseUrl(baseUrl)
         .build()
 
     //CourseApiService used to create repository

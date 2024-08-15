@@ -149,7 +149,6 @@ fun Prompt(
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
-    val coursesUiState = coursesViewModel.uiState.collectAsState().value
 
     Box(modifier = modifier) {
         TextField(
@@ -266,6 +265,7 @@ fun PromptCard(
 
             Button(
                 onClick = {
+
                     coursesViewModel.setCourses()
                 },
                 modifier = Modifier
@@ -284,7 +284,7 @@ fun ScheduleOfClassesApp(
     coursesViewModel: CoursesViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
-    val coursesUiState = coursesViewModel.uiState.collectAsState().value
+    val coursesUiState by coursesViewModel.uiState.collectAsState()
     LazyColumn(modifier) {
         item {
             PromptCard(
