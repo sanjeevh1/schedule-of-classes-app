@@ -8,6 +8,6 @@ data class CoursesUiState(
     var campus: String? = null,
     var level: String? = null,
     var subject: String? = null,
-    var courses: List<Course>? = emptyList(),
+    var courses: List<Course> = emptyList(),
     var showCourses: Boolean = false
 )

@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RutgersScheduleOfClassesTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PromptCard(CoursesViewModel(), modifier = Modifier.padding(innerPadding))
+                    ScheduleOfClassesApp(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -205,7 +205,10 @@ fun getYearMap(): Map<String,String> {
 
 //A card prompting the user for input
 @Composable
-fun PromptCard(coursesViewModel: CoursesViewModel, modifier: Modifier = Modifier) {
+fun PromptCard(
+    coursesViewModel: CoursesViewModel,
+    modifier: Modifier = Modifier
+) {
     val coursesUiState by coursesViewModel.uiState.collectAsState()
 
     Card(modifier = modifier) {
@@ -277,26 +280,35 @@ fun PromptCard(coursesViewModel: CoursesViewModel, modifier: Modifier = Modifier
 
 //Displays the prompt and results
 @Composable
-fun ScheduleOfCoursesApp(coursesViewModel: CoursesViewModel = viewModel()) {
+fun ScheduleOfClassesApp(
+    coursesViewModel: CoursesViewModel = viewModel(),
+    modifier: Modifier = Modifier
+) {
     val coursesUiState = coursesViewModel.uiState.collectAsState().value
-    val courses : List<Course>? = coursesUiState.courses
-    LazyColumn() {
+    LazyColumn(modifier) {
         item {
-            PromptCard(coursesViewModel)
+            PromptCard(
+                coursesViewModel = coursesViewModel,
+                modifier = Modifier.padding(10.dp)
+            )
         }
-        if (courses == null) {
-            item {
-                Text(text = "Please enter all fields")
+        if (coursesUiState.showCourses) {
+            if(!coursesViewModel.hasValidInput()) {
+                item {
+                    Text(text = "Please enter all fields")
+                }
             }
-        }
-        else if (courses.isEmpty() && coursesUiState.showCourses) {
-            item {
-                Text(text = "No courses found")
-            }
-        }
-        else {
-            items(courses.size) { index ->
-                CourseCard(course = courses[index])
+            else if (coursesUiState.courses.isEmpty()) {
+                item {
+                    Text(text = "No courses found")
+                }
+            } else {
+                items(coursesUiState.courses.size) { index ->
+                    CourseCard(
+                        course = coursesUiState.courses[index],
+                        modifier = Modifier.padding(10.dp)
+                    )
+                }
             }
         }
     }
@@ -306,6 +318,6 @@ fun ScheduleOfCoursesApp(coursesViewModel: CoursesViewModel = viewModel()) {
 @Composable
 fun GreetingPreview() {
     RutgersScheduleOfClassesTheme {
-        PromptCard(CoursesViewModel())
+        ScheduleOfClassesApp()
     }
 }
