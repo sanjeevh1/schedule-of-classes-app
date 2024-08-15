@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -79,18 +80,18 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 //A box displaying the information for a given section
 @Composable
 fun SectionBox(section: Section, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .background(
-                color = colorResource(id =
-                    if (section.openStatus) {
-                        R.color.green
-                    } else {
-                        R.color.scarlet
-                    }
-                )
-            )
-            .fillMaxWidth()
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(
+                id = if(section.openStatus) {
+                    R.color.green
+                } else {
+                    R.color.scarlet
+                }
+            ),
+            contentColor = colorResource(id = R.color.white)
+        ),
+        modifier = modifier.fillMaxWidth()
     ) {
         Column() {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
@@ -130,7 +131,10 @@ fun CourseCard(course: Course, modifier: Modifier = Modifier) {
             }
             if(showSections) {
                 for (section in course.sections) {
-                    SectionBox(section = section)
+                    SectionBox(
+                        section = section,
+                        modifier = Modifier.padding(10.dp)
+                    )
                 }
             }
 
