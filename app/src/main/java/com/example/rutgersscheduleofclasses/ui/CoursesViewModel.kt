@@ -11,12 +11,23 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 //A class to store the UI state (which courses should be shown)
 class CoursesViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(CoursesUiState())
     val uiState: StateFlow<CoursesUiState> = _uiState.asStateFlow()
+    private val url = "https://classes.rutgers.edu/soc/api/courses.json?year=%s&term=%s&campus=%s"
 
+    private fun getUrl(): String {
+        return url.format(
+            _uiState.value.year,
+            _uiState.value.term,
+            _uiState.value.campus
+        )
+    }
     /**
      *sets this.courses based on other parameters
      **/
@@ -27,15 +38,28 @@ class CoursesViewModel : ViewModel() {
         if (hasValidInput()) {
             val appContainer = DefaultAppContainer()
             viewModelScope.launch {
-                val unfilteredList: List<Course> = try {
-                    appContainer.courseRepository.getCourses(
-                        year = _uiState.value.year!!,
-                        term = _uiState.value.term!!,
-                        campus = _uiState.value.campus!!
-                    )
-                } catch (e: Exception) {
-                    throw Exception("Error retrieving courses")
-                    emptyList()
+                val client = OkHttpClient()
+                val json = Json { ignoreUnknownKeys = true }
+                val unfilteredList : List<Course> = withContext(Dispatchers.IO) {
+                    val request = Request.Builder()
+                        .url(getUrl())
+                        .build()
+                    val response = client.newCall(request).execute()
+                    if (response.isSuccessful) {
+                        val responseBody = response.body
+                        if (responseBody != null) {
+                            try {
+                                json.decodeFromString<List<Course>>(responseBody.string())
+                            } catch(e : Exception) {
+                                emptyList()
+                            }
+                        } else {
+                            emptyList() // Handle empty response
+                        }
+                    } else {
+                        // Handle HTTP error response
+                        emptyList()
+                    }
                 }
                 withContext(Dispatchers.Main) {
                     _uiState.update { currentState ->
