@@ -111,7 +111,7 @@ fun SectionBox(section: Section, modifier: Modifier = Modifier) {
 //A card displaying the information for a given course
 @Composable
 fun CourseCard(course: Course, modifier: Modifier = Modifier) {
-    var showSections by rememberSaveable { mutableStateOf(false) }
+    var showSections by remember { mutableStateOf(false) }
     Card(modifier = modifier) {
         Column() {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
@@ -306,7 +306,9 @@ fun ScheduleOfClassesApp(
                 items(coursesUiState.courses.size) { index ->
                     CourseCard(
                         course = coursesUiState.courses[index],
-                        modifier = Modifier.padding(10.dp)
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxWidth()
                     )
                 }
             }

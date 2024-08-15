@@ -19,61 +19,39 @@ import okhttp3.Request
 class CoursesViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(CoursesUiState())
     val uiState: StateFlow<CoursesUiState> = _uiState.asStateFlow()
-    private val url = "https://classes.rutgers.edu/soc/api/courses.json?year=%s&term=%s&campus=%s"
 
-    private fun getUrl(): String {
-        return url.format(
-            _uiState.value.year,
-            _uiState.value.term,
-            _uiState.value.campus
-        )
-    }
     /**
      *sets this.courses based on other parameters
      **/
     fun setCourses() {
-        _uiState.update { currentState ->
-            currentState.copy(showCourses = true)
-        }
         if (hasValidInput()) {
-            val appContainer = DefaultAppContainer()
             viewModelScope.launch {
-                val client = OkHttpClient()
-                val json = Json { ignoreUnknownKeys = true }
-                val unfilteredList : List<Course> = withContext(Dispatchers.IO) {
-                    val request = Request.Builder()
-                        .url(getUrl())
-                        .build()
-                    val response = client.newCall(request).execute()
-                    if (response.isSuccessful) {
-                        val responseBody = response.body
-                        if (responseBody != null) {
-                            try {
-                                json.decodeFromString<List<Course>>(responseBody.string())
-                            } catch(e : Exception) {
-                                emptyList()
-                            }
-                        } else {
-                            emptyList() // Handle empty response
-                        }
-                    } else {
-                        // Handle HTTP error response
-                        emptyList()
-                    }
-                }
+                val appContainer = DefaultAppContainer()
+                val unfilteredList = appContainer.courseRepository.getCourses(
+                    year = _uiState.value.year!!,
+                    term = _uiState.value.term!!,
+                    campus = _uiState.value.campus!!
+                )
                 withContext(Dispatchers.Main) {
                     _uiState.update { currentState ->
-                        currentState.copy(courses =
-                            unfilteredList.filter { course ->
+                        currentState.copy(
+                            courses = unfilteredList.filter { course ->
                                 course.subject == _uiState.value.subject
                                         && course.level == _uiState.value.level
-                            }
+                            },
+                            showCourses = true
                         )
                     }
                 }
             }
         }
+        else {
+            _uiState.update { currentState ->
+                currentState.copy(showCourses = true)
+            }
+        }
     }
+
 
     //returns true if courses can be retrieved based on given parameters, and false otherwise
     fun hasValidInput(): Boolean {

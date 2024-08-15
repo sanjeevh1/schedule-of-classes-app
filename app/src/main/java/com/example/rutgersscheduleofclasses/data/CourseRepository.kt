@@ -24,5 +24,11 @@ class NetworkCourseRepository(
         year: String,
         term: String,
         campus: String
-    ): List<Course> = courseApiService.getCourses()
+    ): List<Course> {
+        return courseApiService.getCourses(
+            year = year,
+            term = term,
+            campus = campus
+        )
+    }
 }
