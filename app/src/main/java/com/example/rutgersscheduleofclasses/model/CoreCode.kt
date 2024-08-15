@@ -16,7 +16,7 @@ data class CoreCode(
     val unit: String?,
     val offeringUnitCode: String?,
     val offeringUnitCampus: String?,
-    val lastUpdated: Int?,
+    val lastUpdated: Long?,
     val course: String?,
     val subject: String?,
     val supplement: String?

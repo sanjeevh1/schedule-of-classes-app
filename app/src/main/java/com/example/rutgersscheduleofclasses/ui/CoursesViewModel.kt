@@ -34,15 +34,16 @@ class CoursesViewModel : ViewModel() {
                         campus = _uiState.value.campus!!
                     )
                 } catch (e: Exception) {
+                    throw Exception("Error retrieving courses")
                     emptyList()
                 }
                 withContext(Dispatchers.Main) {
                     _uiState.update { currentState ->
                         currentState.copy(courses =
-                        unfilteredList.filter { course ->
-                            course.subject == _uiState.value.subject
-                                    && course.level == _uiState.value.level
-                        }
+                            unfilteredList.filter { course ->
+                                course.subject == _uiState.value.subject
+                                        && course.level == _uiState.value.level
+                            }
                         )
                     }
                 }
