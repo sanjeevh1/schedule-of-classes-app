@@ -19,6 +19,7 @@ import okhttp3.Request
 class CoursesViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(CoursesUiState())
     val uiState: StateFlow<CoursesUiState> = _uiState.asStateFlow()
+    private val appContainer = DefaultAppContainer() //used to get data from API
 
     /**
      *sets this.courses based on other parameters
@@ -29,7 +30,6 @@ class CoursesViewModel : ViewModel() {
                 _uiState.update { currentState ->
                     currentState.copy(loading = true)
                 }
-                val appContainer = DefaultAppContainer()
                 val unfilteredList = appContainer.courseRepository.getCourses(
                     year = _uiState.value.year!!,
                     term = _uiState.value.term!!,

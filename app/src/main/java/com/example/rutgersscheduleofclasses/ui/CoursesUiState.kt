@@ -2,6 +2,7 @@ package com.example.rutgersscheduleofclasses.ui
 
 import com.example.rutgersscheduleofclasses.model.Course
 
+//Data class to store the UI state
 data class CoursesUiState(
     var year: String? = null,
     var term: String? = null,
