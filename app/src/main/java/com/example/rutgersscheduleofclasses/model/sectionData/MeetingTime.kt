@@ -8,20 +8,20 @@ import kotlinx.serialization.Serializable
 //A data class to describe the times when a section meets
 @Serializable
 data class MeetingTime(
-    val campusLocation: String?,
-    val roomNumber: String,
-    val campusAbbrev: String,
-    val campusName: String?,
-    val startTimeMilitary: String,
-    val buildingCode: String,
-    val meetingModeDesc: String?,
-    val endTimeMilitary: String,
-    val meetingModeCode: String?,
-    val baClassHours: String?,
-    val pmCode: String,
-    val meetingDay: String,
-    val startTime: String,
-    val endTime: String
+    val campusLocation: String? = null,
+    val roomNumber: String = "",
+    val campusAbbrev: String = "",
+    val campusName: String? = "",
+    val startTimeMilitary: String = "",
+    val buildingCode: String = "",
+    val meetingModeDesc: String? = null,
+    val endTimeMilitary: String = "",
+    val meetingModeCode: String? = null,
+    val baClassHours: String? = null,
+    val pmCode: String = "",
+    val meetingDay: String = "",
+    val startTime: String = "",
+    val endTime: String = ""
 ) {
     //Returns a string representation of the meeting time
     override fun toString(): String {
@@ -33,12 +33,12 @@ data class MeetingTime(
 
         val start: String =
             startTime.substring(0, 2) + ":" + startTime.substring(2, 4)
-        val startCode = if (startTimeMilitary.substring(0, 2).toInt() >= 12) " PM" else "AM"
+        val startCode = if (startTimeMilitary.substring(0, 2).toInt() >= 12) "PM" else "AM"
 
         val end: String =
             endTime.substring(0, 2) + ":" + endTime.substring(2, 4)
-        val endCode = if (endTimeMilitary.substring(0, 2).toInt() >= 12) " PM" else "AM"
+        val endCode = if (endTimeMilitary.substring(0, 2).toInt() >= 12) "PM" else "AM"
 
-        return "$day $start$startCode-$end$endCode : $buildingCode-$roomNumber ($campusAbbrev)"
+        return "$day $start $startCode - $end $endCode\nLocation: $buildingCode-$roomNumber ($campusAbbrev)"
     }
 }

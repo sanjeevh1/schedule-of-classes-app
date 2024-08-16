@@ -14,19 +14,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -91,19 +95,28 @@ fun SectionBox(section: Section, modifier: Modifier = Modifier) {
             ),
             contentColor = colorResource(id = R.color.white)
         ),
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
     ) {
-        Column() {
-            Row(horizontalArrangement = Arrangement.SpaceBetween) {
+        Column(
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(text = section.number)
                 Text(text = section.openStatusText)
             }
-            Text(text = "section: ${section.index}")
-            Text(text = "instructors: ${section.instructorsText}")
+            Text(text = "Index: ${section.index}")
+            Text(text = "Instructors: ${section.instructorsText}")
             //add meeting times
-            Text(text = "meeting times:")
+            Text(text = "Meeting Times:")
             for (meetingTime in section.meetingTimes) {
-                Text(text = meetingTime.toString())
+                Text(
+                    text = meetingTime.toString(),
+                    modifier = Modifier.padding(top = 5.dp)
+                )
             }
         }
     }
@@ -113,19 +126,34 @@ fun SectionBox(section: Section, modifier: Modifier = Modifier) {
 @Composable
 fun CourseCard(course: Course, modifier: Modifier = Modifier) {
     var showSections by remember { mutableStateOf(false) }
-    Card(modifier = modifier) {
-        Column() {
-            Row(horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = course.courseNumber)
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.gray),
+            contentColor = colorResource(id = R.color.white)
+        ),
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = course.courseString)
                 IconButton(onClick = { showSections = !showSections }) {
                     Icon(
                         imageVector = if (showSections) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = colorResource(R.color.white)
                     )
                 }
             }
             Text(text = course.title)
-            Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(text = course.creditsObject.description)
                 Text(text = "sections: ${course.openSections}/${course.sections.size}")
             }
@@ -133,7 +161,9 @@ fun CourseCard(course: Course, modifier: Modifier = Modifier) {
                 for (section in course.sections) {
                     SectionBox(
                         section = section,
-                        modifier = Modifier.padding(10.dp)
+                        modifier = Modifier.padding(
+                            top = 10.dp
+                        )
                     )
                 }
             }
@@ -154,25 +184,28 @@ fun Prompt(
     var menuExpanded by remember { mutableStateOf(false) }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
 
-    Box(modifier = modifier) {
+    Box(
+        modifier = modifier.background(colorResource(id = R.color.gray))
+    ) {
         TextField(
             value = value?: "",
             onValueChange = {},
             readOnly = true,
-            label = { Text(text = label)},
+            label = { Text(text = label) },
             trailingIcon = {
                 IconButton(
                     onClick = { menuExpanded = !menuExpanded },
                     content = {
                         Icon(
                             imageVector = if (menuExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 )
             },
             modifier = Modifier
                 .fillMaxWidth()
+                .background(colorResource(id = R.color.gray))
                 .onGloballyPositioned { coordinates ->
                     textFieldSize = coordinates.size.toSize()
                 }
@@ -180,17 +213,24 @@ fun Prompt(
         DropdownMenu(
             expanded = menuExpanded,
             onDismissRequest = { menuExpanded = false },
-            modifier = Modifier.width(
-                with(LocalDensity.current) { textFieldSize.width.toDp() }
-            )
+            modifier = Modifier
+                .background(colorResource(id = R.color.gray))
+                .width(
+                    with(LocalDensity.current) { textFieldSize.width.toDp() }
+                )
         ) {
             map.forEach { entry ->
                 DropdownMenuItem(
-                    text = { Text(text = entry.value) },
+                    text = {
+                        Text(
+                            text = entry.value,
+                            color = colorResource(id = R.color.white)
+                        )
+                           },
                     onClick = {
                         onResponse(coursesViewModel,entry.key)
                         menuExpanded = false
-                    }
+                    },
                 )
             }
         }
@@ -199,7 +239,7 @@ fun Prompt(
 
 //returns a map of every year as a string to itself
 fun getYearMap(): Map<String,String> {
-    var map = mutableMapOf<String,String>()
+    val map = mutableMapOf<String,String>()
     for (year in 2021..Calendar.getInstance().get(Calendar.YEAR) + 1) {
         map[year.toString()] = year.toString()
     }
@@ -214,7 +254,12 @@ fun PromptCard(
 ) {
     val coursesUiState by coursesViewModel.uiState.collectAsState()
 
-    Card(modifier = modifier) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.scarlet),
+        ),
+        modifier = modifier
+    ) {
         Column() {
             Prompt(
                 label = "Year",
@@ -268,15 +313,19 @@ fun PromptCard(
             )
 
             Button(
-                onClick = {
-
-                    coursesViewModel.setCourses()
-                },
+                onClick = { coursesViewModel.setCourses() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.gray),
+                    contentColor = colorResource(id = R.color.white)
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp)
             ) {
-                Text(text = "Search")
+                Text(
+                    text = "Search",
+                    color = colorResource(id = R.color.white)
+                )
             }
         }
     }
@@ -286,7 +335,7 @@ fun PromptCard(
 @Composable
 fun ScheduleOfClassesApp(
     coursesViewModel: CoursesViewModel = viewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.background(color = colorResource(R.color.gray))
 ) {
     val coursesUiState by coursesViewModel.uiState.collectAsState()
     LazyColumn(modifier) {
@@ -299,12 +348,20 @@ fun ScheduleOfClassesApp(
         if (coursesUiState.showCourses) {
             if(!coursesViewModel.hasValidInput()) {
                 item {
-                    Text(text = "Please enter all fields")
+                    Text(
+                        text = "Please enter all fields",
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
             else if (coursesUiState.courses.isEmpty()) {
                 item {
-                    Text(text = "No courses found")
+                    Text(
+                        text = "No courses found",
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             } else {
                 items(coursesUiState.courses.size) { index ->

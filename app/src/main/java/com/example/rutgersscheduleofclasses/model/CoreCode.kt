@@ -4,20 +4,20 @@ import kotlinx.serialization.Serializable
 //A data class for core codes that a course may satisfy
 @Serializable
 data class CoreCode(
-    val id: String?,
-    val year: String?,
-    val term: String?,
-    val effective: String?,
-    val coreCodeReferenceId: String?,
-    val coreCode: String?,
-    val coreCodeDescription: String?,
-    val description: String?,
-    val code: String?,
-    val unit: String?,
-    val offeringUnitCode: String?,
-    val offeringUnitCampus: String?,
-    val lastUpdated: Long?,
-    val course: String?,
-    val subject: String?,
-    val supplement: String?
+    val id: String? = null,
+    val year: String? = null,
+    val term: String? = null,
+    val effective: String? = null,
+    val coreCodeReferenceId: String? = null,
+    val coreCode: String? = null,
+    val coreCodeDescription: String? = null,
+    val description: String? = null,
+    val code: String? = null,
+    val unit: String? = null,
+    val offeringUnitCode: String? = null,
+    val offeringUnitCampus: String? = null,
+    val lastUpdated: Long? = null,
+    val course: String? = null,
+    val subject: String? = null,
+    val supplement: String? = null
 )
