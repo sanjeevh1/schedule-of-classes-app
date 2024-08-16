@@ -3,7 +3,6 @@ package com.example.rutgersscheduleofclasses.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rutgersscheduleofclasses.data.DefaultAppContainer
-import com.example.rutgersscheduleofclasses.model.Course
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,9 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import okhttp3.OkHttpClient
-import okhttp3.Request
 
 //A class to store the UI state (which courses should be shown)
 class CoursesViewModel : ViewModel() {
