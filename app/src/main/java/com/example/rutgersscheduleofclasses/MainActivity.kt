@@ -235,6 +235,7 @@ fun Prompt(
                         )
                            },
                     onClick = {
+                        coursesViewModel.hideCourses()
                         onResponse(coursesViewModel,entry.key)
                         menuExpanded = false
                     },

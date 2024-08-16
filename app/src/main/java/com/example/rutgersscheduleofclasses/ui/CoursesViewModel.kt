@@ -102,4 +102,10 @@ class CoursesViewModel : ViewModel() {
             currentState.copy(subject = subject)
         }
     }
+    //Makes sure courses are not shown
+    fun hideCourses() {
+        _uiState.update { currentState ->
+            currentState.copy(showCourses = false)
+        }
+    }
 }
