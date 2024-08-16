@@ -9,5 +9,6 @@ data class CoursesUiState(
     var level: String? = null,
     var subject: String? = null,
     var courses: List<Course> = emptyList(),
-    var showCourses: Boolean = false
+    var showCourses: Boolean = false,
+    val loading: Boolean = false
 )

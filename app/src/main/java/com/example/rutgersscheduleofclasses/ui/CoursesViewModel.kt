@@ -26,6 +26,9 @@ class CoursesViewModel : ViewModel() {
     fun setCourses() {
         if (hasValidInput()) {
             viewModelScope.launch {
+                _uiState.update { currentState ->
+                    currentState.copy(loading = true)
+                }
                 val appContainer = DefaultAppContainer()
                 val unfilteredList = appContainer.courseRepository.getCourses(
                     year = _uiState.value.year!!,
@@ -41,6 +44,9 @@ class CoursesViewModel : ViewModel() {
                             },
                             showCourses = true
                         )
+                    }
+                    _uiState.update { currentState ->
+                        currentState.copy(loading = false)
                     }
                 }
             }
