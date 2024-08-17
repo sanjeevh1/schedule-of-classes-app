@@ -1,5 +1,6 @@
 package com.example.rutgersscheduleofclasses.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
@@ -56,7 +58,7 @@ fun PromptCard(
     ) {
         Column() {
             Prompt(
-                label = "Year",
+                labelRes = R.string.year,
                 value = coursesUiState.year,
                 map = getYearMap(),
                 coursesViewModel = coursesViewModel,
@@ -66,7 +68,7 @@ fun PromptCard(
                 modifier = Modifier.padding(20.dp)
             )
             Prompt(
-                label = "Term",
+                labelRes = R.string.term,
                 value = terms[coursesUiState.term],
                 map = terms,
                 coursesViewModel = coursesViewModel,
@@ -76,7 +78,7 @@ fun PromptCard(
                 modifier = Modifier.padding(20.dp)
             )
             Prompt(
-                label = "Campus",
+                labelRes = R.string.campus,
                 value = campuses[coursesUiState.campus],
                 map = campuses,
                 coursesViewModel = coursesViewModel,
@@ -86,7 +88,7 @@ fun PromptCard(
                 modifier = Modifier.padding(20.dp)
             )
             Prompt(
-                label = "Level",
+                labelRes = R.string.level,
                 value = levels[coursesUiState.level],
                 map = levels,
                 coursesViewModel = coursesViewModel,
@@ -96,7 +98,7 @@ fun PromptCard(
                 modifier = Modifier.padding(20.dp)
             )
             Prompt(
-                label = "Subject",
+                labelRes = R.string.subject,
                 value = subjects[coursesUiState.subject],
                 map = subjects,
                 coursesViewModel = coursesViewModel,
@@ -117,7 +119,7 @@ fun PromptCard(
                     .padding(20.dp)
             ) {
                 Text(
-                    text = "Search",
+                    text = stringResource(R.string.search),
                     color = colorResource(id = R.color.white)
                 )
             }
@@ -128,7 +130,7 @@ fun PromptCard(
 //A box prompting the user for input
 @Composable
 fun Prompt(
-    label: String,
+    @StringRes labelRes: Int,
     value: String?,
     map: Map<String,String>,
     coursesViewModel: CoursesViewModel,
@@ -145,14 +147,18 @@ fun Prompt(
             value = value?: "",
             onValueChange = {},
             readOnly = true,
-            label = { Text(text = label) },
+            label = {
+                Text(
+                    text = stringResource(labelRes)
+                )
+            },
             trailingIcon = {
                 IconButton(
                     onClick = { menuExpanded = !menuExpanded },
                     content = {
                         Icon(
                             imageVector = if (menuExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.prompt_expand_description),
                         )
                     }
                 )

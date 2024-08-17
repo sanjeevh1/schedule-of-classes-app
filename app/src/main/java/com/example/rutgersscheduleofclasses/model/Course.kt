@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class Course(
     val campusLocations: List<CampusLocation?>? = null,
     val subject: String? = null,
-    val openSections: Int? = null,
+    val openSections: Int = 0,
     val synopsisUrl: String? = null,
     val title: String = "",
     val preReqNotes: String? = null,

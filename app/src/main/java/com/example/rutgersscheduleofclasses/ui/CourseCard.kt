@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.rutgersscheduleofclasses.R
@@ -30,7 +31,7 @@ import com.example.rutgersscheduleofclasses.model.sectionData.Section
 
 //A box displaying the information for a given section
 @Composable
-fun SectionBox(section: Section, modifier: Modifier = Modifier) {
+fun SectionCard(section: Section, modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = colorResource(
@@ -55,10 +56,19 @@ fun SectionBox(section: Section, modifier: Modifier = Modifier) {
                 Text(text = section.number)
                 Text(text = section.openStatusText)
             }
-            Text(text = "Index: ${section.index}")
-            Text(text = "Instructors: ${section.instructorsText}")
-            //add meeting times
-            Text(text = "Meeting Times:")
+            Text(
+                text = stringResource(
+                    R.string.section_index,
+                    section.index
+                )
+            )
+            Text(
+                text = stringResource(
+                    R.string.section_instructors,
+                    section.instructorsText
+                )
+            )
+            Text(text = stringResource(R.string.section_meeting_times))
             for (meetingTime in section.meetingTimes) {
                 Text(
                     text = meetingTime.toString(),
@@ -91,7 +101,7 @@ fun CourseCard(course: Course, modifier: Modifier = Modifier) {
                 IconButton(onClick = { showSections = !showSections }) {
                     Icon(
                         imageVector = if (showSections) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.show_sections_description),
                         tint = colorResource(R.color.white)
                     )
                 }
@@ -102,11 +112,17 @@ fun CourseCard(course: Course, modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = course.creditsObject.description)
-                Text(text = "sections: ${course.openSections}/${course.sections.size}")
+                Text(
+                    text = stringResource(
+                        R.string.available_sections,
+                        course.openSections,
+                        course.sections.size
+                    )
+                )
             }
             if(showSections) {
                 for (section in course.sections) {
-                    SectionBox(
+                    SectionCard(
                         section = section,
                         modifier = Modifier.padding(
                             top = 10.dp

@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -71,7 +72,7 @@ fun ScheduleOfClassesApp(
             if(!coursesViewModel.hasValidInput()) {
                 item {
                     Text(
-                        text = "Please enter all fields",
+                        text = stringResource(R.string.empty_fields),
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -80,7 +81,7 @@ fun ScheduleOfClassesApp(
             else if (coursesUiState.courses.isEmpty()) {
                 item {
                     Text(
-                        text = "No courses found",
+                        text = stringResource(R.string.no_courses),
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )

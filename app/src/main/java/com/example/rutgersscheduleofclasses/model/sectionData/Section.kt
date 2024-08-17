@@ -25,7 +25,7 @@ data class Section(
     val courseFeeDescr: String? = null,
     val openStatus: Boolean = false,
     val comments: List<Comment?>? = null,
-    val instructorsText: String? = null,
+    val instructorsText: String = "",
     val minors: List<Minor?>? = null,
     val examCodeText: String? = null,
     val campusCode: String? = null,
