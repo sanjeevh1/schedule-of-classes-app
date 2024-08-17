@@ -13,7 +13,7 @@ interface AppContainer {
 
 //Class for the DefaultAppContainer
 class DefaultAppContainer() : AppContainer {
-    //Format string for url to course list
+    //Base URL to access courses
     private val baseUrl = "https://classes.rutgers.edu/"
 
     //Retrofit object used to parse JSON data
