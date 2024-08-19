@@ -13,7 +13,7 @@
         android:theme="@style/Theme.RutgersScheduleOfClasses"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="my.soc.rutgersscheduleofclasses.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.RutgersScheduleOfClasses">
             <intent-filter>

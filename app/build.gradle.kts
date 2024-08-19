@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.rutgersscheduleofclasses"
+    namespace = "my.soc.rutgersscheduleofclasses"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.rutgersscheduleofclasses"
+        applicationId = "my.soc.rutgersscheduleofclasses"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -41,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
         resources {
