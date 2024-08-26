@@ -31,9 +31,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import my.soc.rutgersscheduleofclasses.R
 import my.soc.rutgersscheduleofclasses.data.Repository.campuses
@@ -45,8 +45,8 @@ import java.util.Calendar
 //A card prompting the user for input
 @Composable
 fun PromptCard(
-    coursesViewModel: CoursesViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    coursesViewModel: CoursesViewModel
 ) {
     val coursesUiState by coursesViewModel.uiState.collectAsState()
 
@@ -65,7 +65,9 @@ fun PromptCard(
                 onResponse = { coursesViewModel, response ->
                     coursesViewModel.updateYear(response)
                 },
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier.padding(
+                    dimensionResource(id = R.dimen.padding_large)
+                )
             )
             Prompt(
                 labelRes = R.string.term,
@@ -75,7 +77,9 @@ fun PromptCard(
                 onResponse = { coursesViewModel, response ->
                     coursesViewModel.updateTerm(response)
                 },
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier.padding(
+                    dimensionResource(id = R.dimen.padding_large)
+                )
             )
             Prompt(
                 labelRes = R.string.campus,
@@ -85,7 +89,9 @@ fun PromptCard(
                 onResponse = { coursesViewModel, response ->
                     coursesViewModel.updateCampus(response)
                 },
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier.padding(
+                    dimensionResource(id = R.dimen.padding_large)
+                )
             )
             Prompt(
                 labelRes = R.string.level,
@@ -95,7 +101,9 @@ fun PromptCard(
                 onResponse = { coursesViewModel, response ->
                     coursesViewModel.updateLevel(response)
                 },
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier.padding(
+                    dimensionResource(id = R.dimen.padding_large)
+                )
             )
             Prompt(
                 labelRes = R.string.subject,
@@ -105,7 +113,9 @@ fun PromptCard(
                 onResponse = { coursesViewModel, response ->
                     coursesViewModel.updateSubject(response)
                 },
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier.padding(
+                    dimensionResource(id = R.dimen.padding_large)
+                )
             )
 
             Button(
@@ -116,7 +126,9 @@ fun PromptCard(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp)
+                    .padding(
+                        dimensionResource(id = R.dimen.padding_large)
+                    )
             ) {
                 Text(
                     text = stringResource(R.string.search),
@@ -130,12 +142,12 @@ fun PromptCard(
 //A box prompting the user for input
 @Composable
 fun Prompt(
+    modifier: Modifier = Modifier,
     @StringRes labelRes: Int,
     value: String?,
     map: Map<String,String>,
     coursesViewModel: CoursesViewModel,
-    onResponse: (CoursesViewModel,String) -> Unit,
-    modifier: Modifier = Modifier
+    onResponse: (CoursesViewModel,String) -> Unit
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }

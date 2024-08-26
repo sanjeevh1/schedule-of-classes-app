@@ -343,5 +343,5 @@ object Repository {
         "988" to "988 - Women's, Gender, and Sexuality Studies",
         "991" to "991 - World Languages",
         "989" to "989 - Writing"
-        )
+    )
 }

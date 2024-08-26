@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,11 +18,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import my.soc.rutgersscheduleofclasses.R
 import my.soc.rutgersscheduleofclasses.ui.CourseCard
 import my.soc.rutgersscheduleofclasses.ui.CoursesViewModel
 import my.soc.rutgersscheduleofclasses.ui.PromptCard
@@ -46,15 +44,17 @@ class MainActivity : ComponentActivity() {
 //Displays the prompt and results
 @Composable
 fun ScheduleOfClassesApp(
-    coursesViewModel: CoursesViewModel = viewModel(),
-    modifier: Modifier = Modifier.background(color = colorResource(R.color.gray))
+    modifier: Modifier = Modifier,
+    coursesViewModel: CoursesViewModel = viewModel()
 ) {
     val coursesUiState by coursesViewModel.uiState.collectAsState()
     LazyColumn(modifier) {
         item {
             PromptCard(
                 coursesViewModel = coursesViewModel,
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.padding(
+                    dimensionResource(id = R.dimen.padding_medium)
+                )
             )
         }
         if(coursesUiState.loading) {
@@ -92,7 +92,9 @@ fun ScheduleOfClassesApp(
                     CourseCard(
                         course = coursesUiState.courses[index],
                         modifier = Modifier
-                            .padding(10.dp)
+                            .padding(
+                                dimensionResource(id = R.dimen.padding_medium)
+                            )
                             .fillMaxWidth()
                     )
                 }

@@ -20,9 +20,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import my.soc.rutgersscheduleofclasses.R
 import my.soc.rutgersscheduleofclasses.model.Course
 import my.soc.rutgersscheduleofclasses.model.CreditsObject
@@ -47,7 +47,9 @@ fun SectionCard(section: Section, modifier: Modifier = Modifier) {
             .fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(
+                dimensionResource(id = R.dimen.padding_medium)
+            )
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -72,7 +74,9 @@ fun SectionCard(section: Section, modifier: Modifier = Modifier) {
             for (meetingTime in section.meetingTimes) {
                 Text(
                     text = meetingTime.toString(),
-                    modifier = Modifier.padding(top = 5.dp)
+                    modifier = Modifier.padding(
+                        top = dimensionResource(id = R.dimen.padding_small)
+                    )
                 )
             }
         }
@@ -81,7 +85,10 @@ fun SectionCard(section: Section, modifier: Modifier = Modifier) {
 
 //A card displaying the information for a given course
 @Composable
-fun CourseCard(course: Course, modifier: Modifier = Modifier) {
+fun CourseCard(
+    modifier: Modifier = Modifier,
+    course: Course,
+) {
     var showSections by remember { mutableStateOf(false) }
     Card(
         colors = CardDefaults.cardColors(
@@ -91,7 +98,9 @@ fun CourseCard(course: Course, modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         Column(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(
+                dimensionResource(id = R.dimen.padding_medium)
+            )
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -125,7 +134,7 @@ fun CourseCard(course: Course, modifier: Modifier = Modifier) {
                     SectionCard(
                         section = section,
                         modifier = Modifier.padding(
-                            top = 10.dp
+                            top = dimensionResource(id = R.dimen.padding_medium)
                         )
                     )
                 }
