@@ -7,11 +7,10 @@ import retrofit2.http.Query
 
 //An interface for the NetworkCourseRepository class
 interface CourseRepository {
-    @GET("soc/api/courses.json")
     suspend fun getCourses(
-        @Query("year") year: String,
-        @Query("term") term: String,
-        @Query("campus") campus: String
+        year: String,
+        term: String,
+        campus: String
     ): List<Course>
 }
 

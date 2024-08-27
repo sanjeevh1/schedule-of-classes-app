@@ -22,5 +22,6 @@
     <string name="section_index">Index: %1$s</string>
     <string name="section_instructors">Instructors: %1$s</string>
     <string name="section_meeting_times">Meeting Times:</string>
+    <string name="connection_error">unable to connect</string>
 
 </resources>

@@ -36,10 +36,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.toSize
 import my.soc.rutgersscheduleofclasses.R
-import my.soc.rutgersscheduleofclasses.data.Repository.campuses
-import my.soc.rutgersscheduleofclasses.data.Repository.levels
-import my.soc.rutgersscheduleofclasses.data.Repository.subjects
-import my.soc.rutgersscheduleofclasses.data.Repository.terms
+import my.soc.rutgersscheduleofclasses.data.PromptRepository.campuses
+import my.soc.rutgersscheduleofclasses.data.PromptRepository.levels
+import my.soc.rutgersscheduleofclasses.data.PromptRepository.subjects
+import my.soc.rutgersscheduleofclasses.data.PromptRepository.terms
+import my.soc.rutgersscheduleofclasses.ui.state.CoursesViewModel
 import java.util.Calendar
 
 //A card prompting the user for input
@@ -48,7 +49,7 @@ fun PromptCard(
     modifier: Modifier = Modifier,
     coursesViewModel: CoursesViewModel
 ) {
-    val coursesUiState by coursesViewModel.uiState.collectAsState()
+    val promptUiState by coursesViewModel.promptUiState.collectAsState()
 
     Card(
         colors = CardDefaults.cardColors(
@@ -59,7 +60,7 @@ fun PromptCard(
         Column() {
             Prompt(
                 labelRes = R.string.year,
-                value = coursesUiState.year,
+                value = promptUiState.year,
                 map = getYearMap(),
                 coursesViewModel = coursesViewModel,
                 onResponse = { coursesViewModel, response ->
@@ -71,7 +72,7 @@ fun PromptCard(
             )
             Prompt(
                 labelRes = R.string.term,
-                value = terms[coursesUiState.term],
+                value = terms[promptUiState.term],
                 map = terms,
                 coursesViewModel = coursesViewModel,
                 onResponse = { coursesViewModel, response ->
@@ -83,7 +84,7 @@ fun PromptCard(
             )
             Prompt(
                 labelRes = R.string.campus,
-                value = campuses[coursesUiState.campus],
+                value = campuses[promptUiState.campus],
                 map = campuses,
                 coursesViewModel = coursesViewModel,
                 onResponse = { coursesViewModel, response ->
@@ -95,7 +96,7 @@ fun PromptCard(
             )
             Prompt(
                 labelRes = R.string.level,
-                value = levels[coursesUiState.level],
+                value = levels[promptUiState.level],
                 map = levels,
                 coursesViewModel = coursesViewModel,
                 onResponse = { coursesViewModel, response ->
@@ -107,7 +108,7 @@ fun PromptCard(
             )
             Prompt(
                 labelRes = R.string.subject,
-                value = subjects[coursesUiState.subject],
+                value = subjects[promptUiState.subject],
                 map = subjects,
                 coursesViewModel = coursesViewModel,
                 onResponse = { coursesViewModel, response ->
@@ -147,7 +148,7 @@ fun Prompt(
     value: String?,
     map: Map<String,String>,
     coursesViewModel: CoursesViewModel,
-    onResponse: (CoursesViewModel,String) -> Unit
+    onResponse: (CoursesViewModel, String) -> Unit
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
@@ -200,10 +201,9 @@ fun Prompt(
                         )
                     },
                     onClick = {
-                        coursesViewModel.hideCourses()
                         onResponse(coursesViewModel,entry.key)
                         menuExpanded = false
-                    },
+                    }
                 )
             }
         }

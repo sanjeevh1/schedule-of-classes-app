@@ -3,7 +3,7 @@ package my.soc.rutgersscheduleofclasses.data
 
 
 //An object to store all maps from codes to full strings
-object Repository {
+object PromptRepository {
 
     //maps codes to course levels
     val levels = mapOf<String,String>(

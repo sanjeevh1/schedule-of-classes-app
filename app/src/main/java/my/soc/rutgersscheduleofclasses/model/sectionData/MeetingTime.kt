@@ -1,5 +1,5 @@
 package my.soc.rutgersscheduleofclasses.model.sectionData
-import my.soc.rutgersscheduleofclasses.data.Repository.daysOfTheWeek
+import my.soc.rutgersscheduleofclasses.data.PromptRepository.daysOfTheWeek
 import kotlinx.serialization.Serializable
 
 //Maps character representations to days of the week
