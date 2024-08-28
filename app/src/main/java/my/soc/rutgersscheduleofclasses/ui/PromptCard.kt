@@ -17,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -41,6 +42,7 @@ import my.soc.rutgersscheduleofclasses.data.PromptRepository.campuses
 import my.soc.rutgersscheduleofclasses.data.PromptRepository.levels
 import my.soc.rutgersscheduleofclasses.data.PromptRepository.subjects
 import my.soc.rutgersscheduleofclasses.data.PromptRepository.terms
+import my.soc.rutgersscheduleofclasses.ui.state.CoursesUiState
 import my.soc.rutgersscheduleofclasses.ui.state.CoursesViewModel
 import my.soc.rutgersscheduleofclasses.ui.state.PromptUiState
 import java.util.Calendar
@@ -50,6 +52,7 @@ import java.util.Calendar
 fun PromptCard(
     modifier: Modifier = Modifier,
     promptUiState: PromptUiState,
+    coursesUiState: CoursesUiState,
 
     onYearResponse: (String) -> Unit,
     onTermResponse: (String) -> Unit,
@@ -59,6 +62,8 @@ fun PromptCard(
 
     onClickButton: () -> Unit
 ) {
+    val enabled = coursesUiState != CoursesUiState.Loading
+    val hasError = coursesUiState == CoursesUiState.InvalidInput
     Card(
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.scarlet)),
         modifier = modifier
@@ -70,6 +75,8 @@ fun PromptCard(
                 .fillMaxWidth()
         ) {
             Prompt(
+                enabled = enabled,
+                showError = hasError,
                 labelRes = R.string.year,
                 value = promptUiState.year,
                 map = getYearMap(),
@@ -77,6 +84,8 @@ fun PromptCard(
                 modifier = Modifier.fillMaxWidth()
             )
             Prompt(
+                enabled = enabled,
+                showError = hasError,
                 labelRes = R.string.term,
                 value = terms[promptUiState.term],
                 map = terms,
@@ -84,6 +93,8 @@ fun PromptCard(
                 modifier = Modifier.fillMaxWidth()
             )
             Prompt(
+                enabled = enabled,
+                showError = hasError,
                 labelRes = R.string.campus,
                 value = campuses[promptUiState.campus],
                 map = campuses,
@@ -91,6 +102,8 @@ fun PromptCard(
                 modifier = Modifier.fillMaxWidth()
             )
             Prompt(
+                enabled = enabled,
+                showError = hasError,
                 labelRes = R.string.level,
                 value = levels[promptUiState.level],
                 map = levels,
@@ -98,6 +111,8 @@ fun PromptCard(
                 modifier = Modifier.fillMaxWidth()
             )
             Prompt(
+                enabled = enabled,
+                showError = hasError,
                 labelRes = R.string.subject,
                 value = subjects[promptUiState.subject],
                 map = subjects,
@@ -106,6 +121,7 @@ fun PromptCard(
             )
 
             Button(
+                enabled = enabled,
                 onClick = onClickButton,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.gray),
@@ -126,6 +142,8 @@ fun PromptCard(
 @Composable
 fun Prompt(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
+    showError: Boolean,
     @StringRes labelRes: Int,
     value: String?,
     map: Map<String,String>,
@@ -137,12 +155,14 @@ fun Prompt(
     Box(modifier = modifier) {
         TextField(
             value = value?: "",
+            isError = showError && (value == null),
             onValueChange = {},
             readOnly = true,
             label = { Text(text = stringResource(labelRes)) },
             trailingIcon = {
                 IconButton(
                     onClick = { menuExpanded = !menuExpanded },
+                    enabled = enabled,
                     content = {
                         Icon(
                             imageVector = if (menuExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
@@ -191,6 +211,7 @@ fun getYearMap(): Map<String,String> {
 fun PromptCardPreview() {
     PromptCard(
         promptUiState = PromptUiState(),
+        coursesUiState = CoursesUiState.Default,
         onYearResponse = {},
         onTermResponse = {},
         onCampusResponse = {},

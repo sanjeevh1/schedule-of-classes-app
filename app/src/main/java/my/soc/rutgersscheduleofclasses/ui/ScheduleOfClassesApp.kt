@@ -36,6 +36,7 @@ fun ScheduleOfClassesApp(
         item {
             PromptCard(
                 promptUiState = promptUiState,
+                coursesUiState = coursesUiState,
 
                 onYearResponse = coursesViewModel::updateYear,
                 onTermResponse = coursesViewModel::updateTerm,
