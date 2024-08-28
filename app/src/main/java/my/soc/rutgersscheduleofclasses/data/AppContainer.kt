@@ -27,7 +27,7 @@ class DefaultAppContainer() : AppContainer {
         retrofit.create(CourseApiService::class.java)
     }
 
-    //repository containing courses for given year, term, and campus
+    //repository to retrieve courses for given input
     override val courseRepository: CourseRepository by lazy {
         NetworkCourseRepository(
             courseApiService = retrofitService

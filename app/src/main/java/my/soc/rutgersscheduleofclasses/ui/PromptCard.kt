@@ -2,6 +2,7 @@ package my.soc.rutgersscheduleofclasses.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,95 +42,76 @@ import my.soc.rutgersscheduleofclasses.data.PromptRepository.levels
 import my.soc.rutgersscheduleofclasses.data.PromptRepository.subjects
 import my.soc.rutgersscheduleofclasses.data.PromptRepository.terms
 import my.soc.rutgersscheduleofclasses.ui.state.CoursesViewModel
+import my.soc.rutgersscheduleofclasses.ui.state.PromptUiState
 import java.util.Calendar
 
 //A card prompting the user for input
 @Composable
 fun PromptCard(
     modifier: Modifier = Modifier,
-    coursesViewModel: CoursesViewModel
-) {
-    val promptUiState by coursesViewModel.promptUiState.collectAsState()
+    promptUiState: PromptUiState,
 
+    onYearResponse: (String) -> Unit,
+    onTermResponse: (String) -> Unit,
+    onCampusResponse: (String) -> Unit,
+    onLevelResponse: (String) -> Unit,
+    onSubjectResponse: (String) -> Unit,
+
+    onClickButton: () -> Unit
+) {
     Card(
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.scarlet),
-        ),
+        colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.scarlet)),
         modifier = modifier
     ) {
-        Column() {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
+            modifier = Modifier
+                .padding(dimensionResource(id = R.dimen.padding_medium))
+                .fillMaxWidth()
+        ) {
             Prompt(
                 labelRes = R.string.year,
                 value = promptUiState.year,
                 map = getYearMap(),
-                coursesViewModel = coursesViewModel,
-                onResponse = { coursesViewModel, response ->
-                    coursesViewModel.updateYear(response)
-                },
-                modifier = Modifier.padding(
-                    dimensionResource(id = R.dimen.padding_large)
-                )
+                onResponse = onYearResponse,
+                modifier = Modifier.fillMaxWidth()
             )
             Prompt(
                 labelRes = R.string.term,
                 value = terms[promptUiState.term],
                 map = terms,
-                coursesViewModel = coursesViewModel,
-                onResponse = { coursesViewModel, response ->
-                    coursesViewModel.updateTerm(response)
-                },
-                modifier = Modifier.padding(
-                    dimensionResource(id = R.dimen.padding_large)
-                )
+                onResponse = onTermResponse,
+                modifier = Modifier.fillMaxWidth()
             )
             Prompt(
                 labelRes = R.string.campus,
                 value = campuses[promptUiState.campus],
                 map = campuses,
-                coursesViewModel = coursesViewModel,
-                onResponse = { coursesViewModel, response ->
-                    coursesViewModel.updateCampus(response)
-                },
-                modifier = Modifier.padding(
-                    dimensionResource(id = R.dimen.padding_large)
-                )
+                onResponse = onCampusResponse,
+                modifier = Modifier.fillMaxWidth()
             )
             Prompt(
                 labelRes = R.string.level,
                 value = levels[promptUiState.level],
                 map = levels,
-                coursesViewModel = coursesViewModel,
-                onResponse = { coursesViewModel, response ->
-                    coursesViewModel.updateLevel(response)
-                },
-                modifier = Modifier.padding(
-                    dimensionResource(id = R.dimen.padding_large)
-                )
+                onResponse = onLevelResponse,
+                modifier = Modifier.fillMaxWidth()
             )
             Prompt(
                 labelRes = R.string.subject,
                 value = subjects[promptUiState.subject],
                 map = subjects,
-                coursesViewModel = coursesViewModel,
-                onResponse = { coursesViewModel, response ->
-                    coursesViewModel.updateSubject(response)
-                },
-                modifier = Modifier.padding(
-                    dimensionResource(id = R.dimen.padding_large)
-                )
+                onResponse = onSubjectResponse,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Button(
-                onClick = { coursesViewModel.setCourses() },
+                onClick = onClickButton,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.gray),
                     contentColor = colorResource(id = R.color.white)
                 ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        dimensionResource(id = R.dimen.padding_large)
-                    )
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = stringResource(R.string.search),
@@ -147,24 +129,17 @@ fun Prompt(
     @StringRes labelRes: Int,
     value: String?,
     map: Map<String,String>,
-    coursesViewModel: CoursesViewModel,
-    onResponse: (CoursesViewModel, String) -> Unit
+    onResponse: (String) -> Unit
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
 
-    Box(
-        modifier = modifier.background(colorResource(id = R.color.gray))
-    ) {
+    Box(modifier = modifier) {
         TextField(
             value = value?: "",
             onValueChange = {},
             readOnly = true,
-            label = {
-                Text(
-                    text = stringResource(labelRes)
-                )
-            },
+            label = { Text(text = stringResource(labelRes)) },
             trailingIcon = {
                 IconButton(
                     onClick = { menuExpanded = !menuExpanded },
@@ -178,7 +153,6 @@ fun Prompt(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .background(colorResource(id = R.color.gray))
                 .onGloballyPositioned { coordinates ->
                     textFieldSize = coordinates.size.toSize()
                 }
@@ -186,22 +160,15 @@ fun Prompt(
         DropdownMenu(
             expanded = menuExpanded,
             onDismissRequest = { menuExpanded = false },
-            modifier = Modifier
-                .background(colorResource(id = R.color.gray))
-                .width(
+            modifier = Modifier.width(
                     with(LocalDensity.current) { textFieldSize.width.toDp() }
-                )
+            )
         ) {
             map.forEach { entry ->
                 DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = entry.value,
-                            color = colorResource(id = R.color.white)
-                        )
-                    },
+                    text = { Text(text = entry.value) },
                     onClick = {
-                        onResponse(coursesViewModel,entry.key)
+                        onResponse(entry.key)
                         menuExpanded = false
                     }
                 )
@@ -223,7 +190,13 @@ fun getYearMap(): Map<String,String> {
 @Composable
 fun PromptCardPreview() {
     PromptCard(
-        coursesViewModel = CoursesViewModel()
+        promptUiState = PromptUiState(),
+        onYearResponse = {},
+        onTermResponse = {},
+        onCampusResponse = {},
+        onLevelResponse = {},
+        onSubjectResponse = {},
+        onClickButton = {}
     )
 }
 

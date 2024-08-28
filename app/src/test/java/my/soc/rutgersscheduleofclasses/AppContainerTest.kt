@@ -11,7 +11,9 @@ class AppContainerTest {
         container.courseRepository.getCourses(
             year = "2024",
             term = "9",
-            campus = "NB"
+            campus = "NB",
+            subject = "003",
+            level = "U"
         )
     }
 }

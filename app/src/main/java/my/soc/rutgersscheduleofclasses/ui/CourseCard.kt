@@ -3,7 +3,9 @@ package my.soc.rutgersscheduleofclasses.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
@@ -48,14 +50,19 @@ fun SectionCard(section: Section, modifier: Modifier = Modifier) {
     ) {
         Column(
             modifier = Modifier.padding(
-                dimensionResource(id = R.dimen.padding_medium)
+                dimensionResource(id = R.dimen.padding_small)
             )
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = section.number)
+                Text(
+                    text = stringResource(
+                        R.string.section_number,
+                        section.number
+                    )
+                )
                 Text(text = section.openStatusText)
             }
             Text(
@@ -70,14 +77,13 @@ fun SectionCard(section: Section, modifier: Modifier = Modifier) {
                     section.instructorsText
                 )
             )
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_medium)))
             Text(text = stringResource(R.string.section_meeting_times))
             for (meetingTime in section.meetingTimes) {
-                Text(
-                    text = meetingTime.toString(),
-                    modifier = Modifier.padding(
-                        top = dimensionResource(id = R.dimen.padding_small)
-                    )
-                )
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
+                if (meetingTime.toString() != "") {
+                    Text(text = meetingTime.toString())
+                }
             }
         }
     }
@@ -98,9 +104,7 @@ fun CourseCard(
         modifier = modifier
     ) {
         Column(
-            modifier = Modifier.padding(
-                dimensionResource(id = R.dimen.padding_medium)
-            )
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -131,12 +135,8 @@ fun CourseCard(
             }
             if(showSections) {
                 for (section in course.sections) {
-                    SectionCard(
-                        section = section,
-                        modifier = Modifier.padding(
-                            top = dimensionResource(id = R.dimen.padding_medium)
-                        )
-                    )
+                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
+                    SectionCard(section = section)
                 }
             }
 

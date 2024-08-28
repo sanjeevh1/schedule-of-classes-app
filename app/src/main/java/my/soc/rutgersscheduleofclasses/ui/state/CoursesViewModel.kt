@@ -4,64 +4,55 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import my.soc.rutgersscheduleofclasses.data.DefaultAppContainer
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import my.soc.rutgersscheduleofclasses.ScheduleOfClassesApplication
+import my.soc.rutgersscheduleofclasses.data.CourseRepository
 import java.io.IOException
 
 //A class to store the UI state (which courses should be shown)
-class CoursesViewModel : ViewModel() {
+class CoursesViewModel(private val courseRepository: CourseRepository) : ViewModel() {
+
+    //stores the UI state for the course list
     var coursesUiState: CoursesUiState by mutableStateOf(CoursesUiState.Default)
+
+    //stores the UI state for the prompts
     private val _promptUiState = MutableStateFlow(PromptUiState())
     val promptUiState: StateFlow<PromptUiState> = _promptUiState.asStateFlow()
-    private val appContainer = DefaultAppContainer() //used to get data from API
 
-    /**
-     *sets this.courses based on other parameters
-     **/
+    //sets coursesUiState based on data from API and promptUiState
     fun setCourses() {
-        if (hasValidInput()) {
-            viewModelScope.launch {
-                coursesUiState = CoursesUiState.Loading
-                try {
-                    val unfilteredList = appContainer.courseRepository.getCourses(
-                        year = _promptUiState.value.year!!,
-                        term = _promptUiState.value.term!!,
-                        campus = _promptUiState.value.campus!!
-                    )
-                    val filteredList = unfilteredList.filter { course ->
-                        course.subject == _promptUiState.value.subject
-                                && course.level == _promptUiState.value.level
-                    }
-                    coursesUiState = if (filteredList.isEmpty()) {
-                        CoursesUiState.NoCoursesFound
-                    } else {
-                        CoursesUiState.Success(filteredList)
-                    }
-                } catch (e: IOException) {
-                    coursesUiState = CoursesUiState.ConnectionError
-                } catch (e: Exception) {
-                    coursesUiState = CoursesUiState.NoCoursesFound
+        viewModelScope.launch {
+            coursesUiState = CoursesUiState.Loading
+            try {
+                val courses = courseRepository.getCourses(
+                    year = _promptUiState.value.year,
+                    term = _promptUiState.value.term,
+                    campus = _promptUiState.value.campus,
+                    subject = _promptUiState.value.subject,
+                    level = _promptUiState.value.level
+                )
+                coursesUiState = if(courses == null) {
+                    CoursesUiState.InvalidInput
+                } else if (courses.isEmpty()) {
+                    CoursesUiState.NoCoursesFound
+                } else {
+                    CoursesUiState.Success(courses)
                 }
+            } catch (e: IOException) {
+                coursesUiState = CoursesUiState.ConnectionError
+            } catch (e: Exception) {
+                coursesUiState = CoursesUiState.NoCoursesFound
             }
         }
-        else {
-            coursesUiState = CoursesUiState.InvalidInput
-        }
-    }
-
-
-    //returns true if courses can be retrieved based on given parameters, and false otherwise
-    fun hasValidInput(): Boolean {
-        return _promptUiState.value.year != null
-                && _promptUiState.value.term != null
-                && _promptUiState.value.campus != null
-                && _promptUiState.value.level != null
-                && _promptUiState.value.subject != null
     }
 
     //updates uiState.year to year
@@ -98,4 +89,16 @@ class CoursesViewModel : ViewModel() {
             currentState.copy(subject = subject)
         }
     }
+
+    //Factory for CoursesViewModel
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as ScheduleOfClassesApplication)
+                val courseRepository = application.container.courseRepository
+                CoursesViewModel(courseRepository = courseRepository)
+            }
+        }
+    }
+
 }

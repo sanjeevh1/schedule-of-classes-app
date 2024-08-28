@@ -15,6 +15,7 @@
     <string name="prompt_expand_description">Expands/hides options</string>
 
     <!--CourseCard strings-->
+    <string name="section_number">Section #: %1$s</string>
     <string name="available_sections">sections: %1$d/%2$d</string>
     <string name="show_sections_description">"Shows/hides sections</string>
 
@@ -22,6 +23,9 @@
     <string name="section_index">Index: %1$s</string>
     <string name="section_instructors">Instructors: %1$s</string>
     <string name="section_meeting_times">Meeting Times:</string>
+
+    <!--courseScreen strings-->
     <string name="connection_error">unable to connect</string>
+    <string name="default_text">Select a year, term, campus, level, and subject and press Search to see results</string>
 
 </resources>
