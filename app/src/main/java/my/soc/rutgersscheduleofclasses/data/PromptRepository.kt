@@ -1,5 +1,6 @@
 package my.soc.rutgersscheduleofclasses.data
 
+import java.util.Calendar
 
 
 //An object to store all maps from codes to full strings
@@ -563,4 +564,13 @@ object PromptRepository {
         "989" to "989 - Writing",
         "990" to "990 - Zoology"
     )
+
+    //returns a map of every year as a string to itself
+    fun getYearMap(): Map<String,String> {
+        val map = mutableMapOf<String,String>()
+        for (year in 2021..Calendar.getInstance().get(Calendar.YEAR) + 1) {
+            map[year.toString()] = year.toString()
+        }
+        return map
+    }
 }

@@ -1,7 +1,6 @@
 package my.soc.rutgersscheduleofclasses.ui
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,13 +16,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,14 +35,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.toSize
 import my.soc.rutgersscheduleofclasses.R
-import my.soc.rutgersscheduleofclasses.data.PromptRepository.campuses
-import my.soc.rutgersscheduleofclasses.data.PromptRepository.levels
-import my.soc.rutgersscheduleofclasses.data.PromptRepository.subjects
-import my.soc.rutgersscheduleofclasses.data.PromptRepository.terms
+import my.soc.rutgersscheduleofclasses.data.PromptRepository
 import my.soc.rutgersscheduleofclasses.ui.state.CoursesUiState
-import my.soc.rutgersscheduleofclasses.ui.state.CoursesViewModel
 import my.soc.rutgersscheduleofclasses.ui.state.PromptUiState
-import java.util.Calendar
 
 //A card prompting the user for input
 @Composable
@@ -79,7 +71,7 @@ fun PromptCard(
                 showError = hasError,
                 labelRes = R.string.year,
                 value = promptUiState.year,
-                map = getYearMap(),
+                map = PromptRepository.getYearMap(),
                 onResponse = onYearResponse,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -87,8 +79,8 @@ fun PromptCard(
                 enabled = enabled,
                 showError = hasError,
                 labelRes = R.string.term,
-                value = terms[promptUiState.term],
-                map = terms,
+                value = PromptRepository.terms[promptUiState.term],
+                map = PromptRepository.terms,
                 onResponse = onTermResponse,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -96,8 +88,8 @@ fun PromptCard(
                 enabled = enabled,
                 showError = hasError,
                 labelRes = R.string.campus,
-                value = campuses[promptUiState.campus],
-                map = campuses,
+                value = PromptRepository.campuses[promptUiState.campus],
+                map = PromptRepository.campuses,
                 onResponse = onCampusResponse,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -105,8 +97,8 @@ fun PromptCard(
                 enabled = enabled,
                 showError = hasError,
                 labelRes = R.string.level,
-                value = levels[promptUiState.level],
-                map = levels,
+                value = PromptRepository.levels[promptUiState.level],
+                map = PromptRepository.levels,
                 onResponse = onLevelResponse,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -114,8 +106,8 @@ fun PromptCard(
                 enabled = enabled,
                 showError = hasError,
                 labelRes = R.string.subject,
-                value = subjects[promptUiState.subject],
-                map = subjects,
+                value = PromptRepository.subjects[promptUiState.subject],
+                map = PromptRepository.subjects,
                 onResponse = onSubjectResponse,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -197,14 +189,7 @@ fun Prompt(
     }
 }
 
-//returns a map of every year as a string to itself
-fun getYearMap(): Map<String,String> {
-    val map = mutableMapOf<String,String>()
-    for (year in 2021..Calendar.getInstance().get(Calendar.YEAR) + 1) {
-        map[year.toString()] = year.toString()
-    }
-    return map
-}
+
 
 @Preview(showBackground = true)
 @Composable
