@@ -47,7 +47,7 @@ fun NoCoursesFoundScreen(modifier: Modifier = Modifier) {
     )
 }
 
-//Displays nothing
+//Displays instructions to use app
 @Composable
 fun DefaultScreen(modifier: Modifier = Modifier) {
     Text(
