@@ -12,7 +12,10 @@ import my.soc.rutgersscheduleofclasses.R
 //Indicates internet connection error
 @Composable
 fun ConnectionErrorScreen(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
+    Column(
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
         Image(
             painter = painterResource(R.drawable.ic_connection_error),
             contentDescription = stringResource(R.string.connection_error),
