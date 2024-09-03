@@ -1,8 +1,5 @@
 package my.soc.rutgersscheduleofclasses.ui.state
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -16,7 +13,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import my.soc.rutgersscheduleofclasses.ScheduleOfClassesApplication
 import my.soc.rutgersscheduleofclasses.data.CourseRepository
-import my.soc.rutgersscheduleofclasses.model.CourseCardInfo
 import java.io.IOException
 
 //A class to store the UI state (which courses should be shown)
@@ -47,10 +43,10 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
                 } else if (courses.isEmpty()) {
                     _coursesUiState.update { CoursesUiState.NoCoursesFound }
                 } else {
-                    val courseCards: MutableList<CourseCardInfo> = mutableListOf()
+                    val courseCards: MutableList<CourseCardState> = mutableListOf()
                     for(course in courses) {
                         courseCards.add(
-                            CourseCardInfo(
+                            CourseCardState(
                                 course = course,
                                 expanded = false
                             )

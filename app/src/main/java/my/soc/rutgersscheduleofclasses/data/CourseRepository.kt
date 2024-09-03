@@ -2,8 +2,6 @@ package my.soc.rutgersscheduleofclasses.data
 
 import my.soc.rutgersscheduleofclasses.model.Course
 import my.soc.rutgersscheduleofclasses.network.CourseApiService
-import retrofit2.http.GET
-import retrofit2.http.Query
 
 //An interface for the NetworkCourseRepository class
 interface CourseRepository {

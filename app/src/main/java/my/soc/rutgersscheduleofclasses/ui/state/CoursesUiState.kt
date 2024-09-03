@@ -1,14 +1,11 @@
 package my.soc.rutgersscheduleofclasses.ui.state
 
-import my.soc.rutgersscheduleofclasses.model.Course
-import my.soc.rutgersscheduleofclasses.model.CourseCardInfo
-
-//Data class to store the UI state
+//Data class to store the UI state of the courses
 sealed interface CoursesUiState {
-    data class Success(val courses: List<CourseCardInfo>) : CoursesUiState
-    object ConnectionError : CoursesUiState
-    object InvalidInput : CoursesUiState
-    object Loading : CoursesUiState
-    object NoCoursesFound : CoursesUiState
-    object Default : CoursesUiState
+    data class Success(val courses: List<CourseCardState>) : CoursesUiState
+    data object ConnectionError : CoursesUiState
+    data object InvalidInput : CoursesUiState
+    data object Loading : CoursesUiState
+    data object NoCoursesFound : CoursesUiState
+    data object Default : CoursesUiState
 }

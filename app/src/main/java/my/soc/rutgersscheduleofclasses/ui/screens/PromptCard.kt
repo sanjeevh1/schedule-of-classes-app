@@ -1,4 +1,4 @@
-package my.soc.rutgersscheduleofclasses.ui
+package my.soc.rutgersscheduleofclasses.ui.screens
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -190,7 +190,7 @@ fun Prompt(
 }
 
 
-
+//Preview for the Prompt Card
 @Preview(showBackground = true)
 @Composable
 fun PromptCardPreview() {
