@@ -94,8 +94,9 @@ fun SectionCard(section: Section, modifier: Modifier = Modifier) {
 fun CourseCard(
     modifier: Modifier = Modifier,
     course: Course,
+    onClick: () -> Unit,
+    expanded: Boolean
 ) {
-    var showSections by remember { mutableStateOf(false) }
     Card(
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.gray),
@@ -111,9 +112,9 @@ fun CourseCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = course.courseString)
-                IconButton(onClick = { showSections = !showSections }) {
+                IconButton(onClick = onClick) {
                     Icon(
-                        imageVector = if (showSections) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                        imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
                         contentDescription = stringResource(R.string.show_sections_description),
                         tint = colorResource(R.color.white)
                     )
@@ -133,7 +134,7 @@ fun CourseCard(
                     )
                 )
             }
-            if(showSections) {
+            if(expanded) {
                 for (section in course.sections) {
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
                     SectionCard(section = section)
@@ -216,6 +217,8 @@ fun CourseCardPreview() {
                     )
                 )
             )
-        )
+        ),
+        onClick = {},
+        expanded = true
     )
 }

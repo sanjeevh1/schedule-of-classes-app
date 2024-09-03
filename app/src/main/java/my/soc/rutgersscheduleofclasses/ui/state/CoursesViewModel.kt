@@ -16,13 +16,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import my.soc.rutgersscheduleofclasses.ScheduleOfClassesApplication
 import my.soc.rutgersscheduleofclasses.data.CourseRepository
+import my.soc.rutgersscheduleofclasses.model.CourseCardInfo
 import java.io.IOException
 
 //A class to store the UI state (which courses should be shown)
 class CoursesViewModel(private val courseRepository: CourseRepository) : ViewModel() {
 
     //stores the UI state for the course list
-    var coursesUiState: CoursesUiState by mutableStateOf(CoursesUiState.Default)
+    private var _coursesUiState: MutableStateFlow<CoursesUiState> = MutableStateFlow(CoursesUiState.Default)
+    var coursesUiState: StateFlow<CoursesUiState> = _coursesUiState.asStateFlow()
 
     //stores the UI state for the prompts
     private val _promptUiState = MutableStateFlow(PromptUiState())
@@ -31,7 +33,7 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
     //sets coursesUiState based on data from API and promptUiState
     fun setCourses() {
         viewModelScope.launch {
-            coursesUiState = CoursesUiState.Loading
+            _coursesUiState.update { CoursesUiState.Loading }
             try {
                 val courses = courseRepository.getCourses(
                     year = _promptUiState.value.year,
@@ -40,17 +42,26 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
                     subject = _promptUiState.value.subject,
                     level = _promptUiState.value.level
                 )
-                coursesUiState = if(courses == null) {
-                    CoursesUiState.InvalidInput
+                if(courses == null) {
+                    _coursesUiState.update { CoursesUiState.InvalidInput }
                 } else if (courses.isEmpty()) {
-                    CoursesUiState.NoCoursesFound
+                    _coursesUiState.update { CoursesUiState.NoCoursesFound }
                 } else {
-                    CoursesUiState.Success(courses)
+                    val courseCards: MutableList<CourseCardInfo> = mutableListOf()
+                    for(course in courses) {
+                        courseCards.add(
+                            CourseCardInfo(
+                                course = course,
+                                expanded = false
+                            )
+                        )
+                    }
+                    _coursesUiState.update { CoursesUiState.Success(courseCards) }
                 }
             } catch (e: IOException) {
-                coursesUiState = CoursesUiState.ConnectionError
+                _coursesUiState.update { CoursesUiState.ConnectionError }
             } catch (e: Exception) {
-                coursesUiState = CoursesUiState.NoCoursesFound
+                _coursesUiState.update { CoursesUiState.NoCoursesFound }
             }
         }
     }
@@ -88,6 +99,18 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
         _promptUiState.update { currentState ->
             currentState.copy(subject = subject)
         }
+    }
+
+    //changes course expand status for course at index
+    fun updateExpand(index: Int) {
+        val stateObject = coursesUiState.value as CoursesUiState.Success
+        val courses = stateObject.courses
+        val newCourses = courses.toMutableList()
+        val courseCardInfo = courses[index]
+        val expanded = courseCardInfo.expanded
+        val newCourseCardInfo = courseCardInfo.copy(expanded = !expanded)
+        newCourses[index] = newCourseCardInfo
+        _coursesUiState.update { CoursesUiState.Success(newCourses) }
     }
 
     //Factory for CoursesViewModel

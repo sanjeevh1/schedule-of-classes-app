@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.Modifier
 import my.soc.rutgersscheduleofclasses.ui.ScheduleOfClassesApp
 import my.soc.rutgersscheduleofclasses.ui.theme.RutgersScheduleOfClassesTheme
@@ -18,7 +19,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             RutgersScheduleOfClassesTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ScheduleOfClassesApp(modifier = Modifier.padding(innerPadding))
+                    //val windowSize = calculateWindowSizeClass(activity = this)
+                    ScheduleOfClassesApp(
+                        //windowSize = windowSize.widthSizeClass,
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }
