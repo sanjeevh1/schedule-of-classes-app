@@ -111,7 +111,7 @@ fun CourseCard(
                 IconButton(onClick = onClick) {
                     Icon(
                         imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                        contentDescription = stringResource(R.string.show_sections_description),
+                        contentDescription = course.title,
                         tint = colorResource(R.color.white)
                     )
                 }

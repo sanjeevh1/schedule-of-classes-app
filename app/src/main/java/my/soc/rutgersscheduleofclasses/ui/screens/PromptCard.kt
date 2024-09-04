@@ -158,7 +158,7 @@ fun Prompt(
                     content = {
                         Icon(
                             imageVector = if (menuExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                            contentDescription = stringResource(R.string.prompt_expand_description),
+                            contentDescription = stringResource(labelRes),
                         )
                     }
                 )

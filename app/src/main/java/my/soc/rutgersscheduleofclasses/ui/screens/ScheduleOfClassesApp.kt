@@ -21,7 +21,7 @@ import my.soc.rutgersscheduleofclasses.ui.theme.RutgersScheduleOfClassesTheme
 
 //Displays the prompt and results
 @Composable
-fun ScheduleOfClassesApp(modifier: Modifier = Modifier, ) {
+fun ScheduleOfClassesApp(modifier: Modifier = Modifier) {
     val coursesViewModel: CoursesViewModel = viewModel(factory = CoursesViewModel.Factory)
     val coursesUiState by coursesViewModel.coursesUiState.collectAsState()
     val promptUiState by coursesViewModel.promptUiState.collectAsState()
