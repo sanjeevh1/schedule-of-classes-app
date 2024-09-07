@@ -35,7 +35,10 @@ fun SectionList(
 
 //A box displaying the information for a given section
 @Composable
-fun SectionCard(section: Section, modifier: Modifier = Modifier) {
+fun SectionCard(
+    section: Section,
+    modifier: Modifier = Modifier
+) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = colorResource(

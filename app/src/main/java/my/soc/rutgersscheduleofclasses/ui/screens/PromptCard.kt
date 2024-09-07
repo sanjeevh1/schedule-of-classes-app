@@ -42,7 +42,6 @@ import my.soc.rutgersscheduleofclasses.ui.state.PromptUiState
 //A card prompting the user for input
 @Composable
 fun PromptCard(
-    modifier: Modifier = Modifier,
     promptUiState: PromptUiState,
     coursesUiState: CoursesUiState,
 
@@ -52,7 +51,8 @@ fun PromptCard(
     onLevelResponse: (String) -> Unit,
     onSubjectResponse: (String) -> Unit,
 
-    onClickButton: () -> Unit
+    onClickButton: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val enabled = coursesUiState != CoursesUiState.Loading
     val hasError = coursesUiState == CoursesUiState.InvalidInput
@@ -123,13 +123,13 @@ fun PromptCard(
 //A box prompting the user for input
 @Composable
 fun Prompt(
-    modifier: Modifier = Modifier,
     enabled: Boolean,
     showError: Boolean,
     @StringRes labelRes: Int,
     value: String?,
     map: Map<String,String>,
-    onResponse: (String) -> Unit
+    onResponse: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }

@@ -31,10 +31,10 @@ import my.soc.rutgersscheduleofclasses.model.sectionData.Section
 //A card displaying the information for a given course
 @Composable
 fun CourseCard(
-    modifier: Modifier = Modifier,
     course: Course,
     onClick: () -> Unit,
-    expanded: Boolean
+    expanded: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -99,7 +99,10 @@ fun CourseExpandIcon(
         contentDescriptionRes = R.string.course_expand
     }
 
-    IconButton(onClick = onClick) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
         Icon(
             imageVector = imageVector,
             contentDescription = stringResource(contentDescriptionRes, course.title),
@@ -114,7 +117,7 @@ fun CourseDescription(
     course: Course,
     modifier: Modifier = Modifier
 ) {
-    Column() {
+    Column(modifier = modifier) {
         Text(text = course.courseString)
         Text(text = course.title)
         Text(text = course.creditsObject.description)
