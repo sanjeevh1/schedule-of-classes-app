@@ -111,21 +111,11 @@ fun PromptCard(
                 onResponse = onSubjectResponse,
                 modifier = Modifier.fillMaxWidth()
             )
-
-            Button(
+            SearchButton(
                 enabled = enabled,
                 onClick = onClickButton,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.gray),
-                    contentColor = colorResource(id = R.color.white)
-                ),
                 modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(R.string.search),
-                    color = colorResource(id = R.color.white)
-                )
-            }
+            )
         }
     }
 }
@@ -158,7 +148,10 @@ fun Prompt(
                     content = {
                         Icon(
                             imageVector = if (menuExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                            contentDescription = stringResource(labelRes),
+                            contentDescription = stringResource(
+                                R.string.prompt_expand,
+                                stringResource(labelRes)
+                            ),
                         )
                     }
                 )
@@ -189,6 +182,28 @@ fun Prompt(
     }
 }
 
+//Button to search for courses
+@Composable
+fun SearchButton(
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        enabled = enabled,
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorResource(id = R.color.gray),
+            contentColor = colorResource(id = R.color.white)
+        ),
+        modifier = modifier
+    ) {
+        Text(
+            text = stringResource(R.string.search),
+            color = colorResource(id = R.color.white)
+        )
+    }
+}
 
 //Preview for the Prompt Card
 @Preview(showBackground = true)

@@ -12,12 +12,15 @@
     <string name="level">Level</string>
     <string name="subject">Subject</string>
     <string name="search">Search</string>
-    <string name="prompt_expand_description">Expands/hides options</string>
+    <string name="prompt_expand">Show options for %1$s</string>
+    <string name="prompt_hide">Hide options for %1$s</string>
 
     <!--CourseCard strings-->
     <string name="section_number">Section #: %1$s</string>
     <string name="available_sections">sections: %1$d/%2$d</string>
-    <string name="show_sections_description">"Shows/hides sections</string>
+    <string name="course_expand">"Show sections for %1$s"</string>
+    <string name="course_hide">"Hide sections for %1$s"</string>
+
 
     <!--SectionBox strings-->
     <string name="section_index">Index: %1$s</string>
