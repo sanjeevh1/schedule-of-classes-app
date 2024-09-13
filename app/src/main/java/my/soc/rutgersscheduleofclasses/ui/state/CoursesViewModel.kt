@@ -15,7 +15,9 @@ import my.soc.rutgersscheduleofclasses.ScheduleOfClassesApplication
 import my.soc.rutgersscheduleofclasses.data.CourseRepository
 import java.io.IOException
 
-//A class to store the UI state (which courses should be shown)
+/**
+ * A ViewModel to store and interact with the UI state
+ */
 class CoursesViewModel(private val courseRepository: CourseRepository) : ViewModel() {
 
     //stores the UI state for the course list
@@ -26,7 +28,9 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
     private val _promptUiState = MutableStateFlow(PromptUiState())
     val promptUiState: StateFlow<PromptUiState> = _promptUiState.asStateFlow()
 
-    //sets coursesUiState based on data from API and promptUiState
+    /**
+     * Sets coursesUiState based on data from API and promptUiState
+     */
     fun setCourses() {
         viewModelScope.launch {
             _coursesUiState.update { CoursesUiState.Loading }
@@ -62,42 +66,60 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
         }
     }
 
-    //updates uiState.year to year
+    /**
+     * Updates the year of the UI state
+     * @param year The year to which the UI state is updated
+     */
     fun updateYear(year: String) {
         _promptUiState.update { currentState ->
             currentState.copy(year = year)
         }
     }
 
-    //updates uiState.term to term
+    /**
+     * Updates the term of the UI State
+     * @param term The term to which the UI state is updated
+     */
     fun updateTerm(term: String) {
         _promptUiState.update { currentState ->
             currentState.copy(term = term)
         }
     }
 
-    //updates uiState.campus to campus
+    /**
+     * Updates the campus of the UI State
+     * @param campus The campus to which the UI state is updated
+     */
     fun updateCampus(campus: String) {
         _promptUiState.update { currentState ->
             currentState.copy(campus = campus)
         }
     }
 
-    //updates uiState.level to level
+    /**
+     * Updates the level of the UI State
+     * @param level The level to which the UI state is updated
+     */
     fun updateLevel(level: String) {
         _promptUiState.update { currentState ->
             currentState.copy(level = level)
         }
     }
 
-    //updates uiState.subject to subject
+    /**
+     * Updates the subject of the UI State
+     * @param subject The subject to which the UI state is updated
+     */
     fun updateSubject(subject: String) {
         _promptUiState.update { currentState ->
             currentState.copy(subject = subject)
         }
     }
 
-    //changes course expand status for course at index
+    /**
+     * Updates the expand status of a course
+     * @param index the index of the course to be updated
+     */
     fun updateExpand(index: Int) {
         val stateObject = coursesUiState.value as CoursesUiState.Success
         val courses = stateObject.courses
@@ -109,7 +131,9 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
         _coursesUiState.update { CoursesUiState.Success(newCourses) }
     }
 
-    //Factory for CoursesViewModel
+    /**
+     * A companion object to create an instance of CoursesViewModel
+     */
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

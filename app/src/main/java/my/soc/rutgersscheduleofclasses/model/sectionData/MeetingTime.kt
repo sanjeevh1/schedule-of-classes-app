@@ -2,10 +2,9 @@ package my.soc.rutgersscheduleofclasses.model.sectionData
 import my.soc.rutgersscheduleofclasses.data.PromptRepository.daysOfTheWeek
 import kotlinx.serialization.Serializable
 
-//Maps character representations to days of the week
-
-
-//A data class to describe the times when a section meets
+/**
+ * A data class to describe the times when a section meets
+ */
 @Serializable
 data class MeetingTime(
     val campusLocation: String? = null,
@@ -23,7 +22,10 @@ data class MeetingTime(
     val startTime: String = "",
     val endTime: String = ""
 ) {
-    //Returns a string representation of the meeting time
+    /**
+     * Returns the MeetingTime as a string
+     * @return a string representation of the meeting time
+     */
     override fun toString(): String {
         if (meetingDay == "") {
             return ""

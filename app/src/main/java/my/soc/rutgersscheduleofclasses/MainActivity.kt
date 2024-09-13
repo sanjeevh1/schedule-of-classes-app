@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import my.soc.rutgersscheduleofclasses.ui.screens.ScheduleOfClassesApp
 import my.soc.rutgersscheduleofclasses.ui.theme.RutgersScheduleOfClassesTheme
 
+/**
+ * Entry point for the app
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,7 +4,9 @@ import android.app.Application
 import my.soc.rutgersscheduleofclasses.data.AppContainer
 import my.soc.rutgersscheduleofclasses.data.DefaultAppContainer
 
-//An application class to store the AppContainer
+/**
+ * An application class that triggers the creation of the AppContainer
+ */
 class ScheduleOfClassesApplication : Application() {
     lateinit var container: AppContainer
     override fun onCreate() {

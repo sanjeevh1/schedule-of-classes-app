@@ -9,7 +9,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import my.soc.rutgersscheduleofclasses.R
 
-//Indicates internet connection error
+/**
+ * Indicates internet connection error
+ * @param modifier Modifier to apply to message
+ */
 @Composable
 fun ConnectionErrorScreen(modifier: Modifier = Modifier) {
     Column(
@@ -27,7 +30,10 @@ fun ConnectionErrorScreen(modifier: Modifier = Modifier) {
     }
 }
 
-//Indicates empty fields
+/**
+ * Indicates empty fields
+ * @param modifier Modifier to apply to message
+ */
 @Composable
 fun InvalidInputScreen(modifier: Modifier = Modifier) {
     Text(
@@ -37,7 +43,10 @@ fun InvalidInputScreen(modifier: Modifier = Modifier) {
     )
 }
 
-//Indicates no courses found
+/**
+ * Indicates no courses found
+ * @param modifier Modifier to apply to message
+ */
 @Composable
 fun NoCoursesFoundScreen(modifier: Modifier = Modifier) {
     Text(
@@ -47,7 +56,10 @@ fun NoCoursesFoundScreen(modifier: Modifier = Modifier) {
     )
 }
 
-//Displays instructions to use app
+/**
+ * Displays instructions to use app
+ * @param modifier Modifier to apply to instructions text
+ */
 @Composable
 fun DefaultScreen(modifier: Modifier = Modifier) {
     Text(

@@ -6,12 +6,16 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 
-//Interface for the DefaultAppContainer class
+/**
+ * Interface for the DefaultAppContainer class
+ */
 interface AppContainer {
     val courseRepository: CourseRepository
 }
 
-//Class for the DefaultAppContainer
+/**
+ * AppContainer class to access the REST API
+ */
 class DefaultAppContainer() : AppContainer {
     //Base URL to access courses
     private val baseUrl = "https://classes.rutgers.edu/"

@@ -39,7 +39,18 @@ import my.soc.rutgersscheduleofclasses.data.PromptRepository
 import my.soc.rutgersscheduleofclasses.ui.state.CoursesUiState
 import my.soc.rutgersscheduleofclasses.ui.state.PromptUiState
 
-//A card prompting the user for input
+/**
+ * A card prompting the user for input
+ * @param promptUiState The current state of the prompt
+ * @param coursesUiState The current state of the courses
+ * @param onYearResponse The function to call when the year is selected
+ * @param onTermResponse The function to call when the term is selected
+ * @param onCampusResponse The function to call when the campus is selected
+ * @param onLevelResponse The function to call when the level is selected
+ * @param onSubjectResponse The function to call when the subject is selected
+ * @param onClickButton The function to call when the search button is clicked
+ * @param modifier The modifier to apply to the card
+ */
 @Composable
 fun PromptCard(
     promptUiState: PromptUiState,
@@ -120,7 +131,16 @@ fun PromptCard(
     }
 }
 
-//A box prompting the user for input
+/**
+ * A prompt for the user to select an option
+ * @param enabled Determines whether user can change input
+ * @param showError Determines if field is empty after search
+ * @param labelRes The string resource for the prompt label
+ * @param value The current value of the prompt (null if prompt is empty)
+ * @param map The map of options for the prompt to their string representations
+ * @param onResponse The function to call when an option is selected
+ * @param modifier The modifier to apply to the text field
+ */
 @Composable
 fun Prompt(
     enabled: Boolean,
@@ -182,7 +202,12 @@ fun Prompt(
     }
 }
 
-//Button to search for courses
+/**
+ * A button to search for courses
+ * @param enabled Determines whether button is clickable
+ * @param onClick The function to call when the button is clicked
+ * @param modifier The modifier to apply to the button
+ */
 @Composable
 fun SearchButton(
     enabled: Boolean,
@@ -205,7 +230,9 @@ fun SearchButton(
     }
 }
 
-//Preview for the Prompt Card
+/**
+ * Preview for the PromptCard
+ */
 @Preview(showBackground = true)
 @Composable
 fun PromptCardPreview() {

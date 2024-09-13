@@ -3,7 +3,9 @@ import my.soc.rutgersscheduleofclasses.model.CampusLocation
 import kotlinx.serialization.Serializable
 
 
-//A data class containing the information for a section of a course
+/**
+ * A data class containing the information for a course
+ */
 @Serializable
 data class Section(
     val sectionEligibility: String? = null,

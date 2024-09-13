@@ -28,7 +28,13 @@ import my.soc.rutgersscheduleofclasses.model.CreditsObject
 import my.soc.rutgersscheduleofclasses.model.sectionData.MeetingTime
 import my.soc.rutgersscheduleofclasses.model.sectionData.Section
 
-//A card displaying the information for a given course
+/**
+ * A card displaying the information for a given course
+ * @param course The course to display
+ * @param onClick A function to be called when the expand icon is clicked
+ * @param expanded Used to determine whether courses are shown
+ * @param modifier Modifier to be applied to the card
+ */
 @Composable
 fun CourseCard(
     course: Course,
@@ -59,7 +65,13 @@ fun CourseCard(
     }
 }
 
-//Top of CourseCard
+/**
+ * The top of a CourseCard
+ * @param course The course for which information is displayed
+ * @param expanded Used to determine the direction of the expanded icon
+ * @param onClick Called when expand icon is clicked
+ * @param modifier Modifier applied to the top of the card
+ */
 @Composable
 fun CourseHeader(
     course: Course,
@@ -80,7 +92,13 @@ fun CourseHeader(
     }
 }
 
-//Icon to expand/hide course sections
+/**
+ * The expand icon for a CourseCard
+ * @param expanded Used to determine the direction of the icon
+ * @param course Used to provide the description for the icon
+ * @param onClick Called when the icon is clicked
+ * @param modifier Modifier applied to the icon
+ */
 @Composable
 fun CourseExpandIcon(
     expanded: Boolean,
@@ -111,7 +129,11 @@ fun CourseExpandIcon(
     }
 }
 
-//Provides information about the course
+/**
+ * The description of the course
+ * @param course The course for which information is displayed
+ * @param modifier Modifier applied to the description
+ */
 @Composable
 fun CourseDescription(
     course: Course,
@@ -132,8 +154,9 @@ fun CourseDescription(
 }
 
 
-
-//Preview of course card
+/**
+ * Preview of course card
+ */
 @Preview(showBackground = true)
 @Composable
 fun CourseCardPreview() {

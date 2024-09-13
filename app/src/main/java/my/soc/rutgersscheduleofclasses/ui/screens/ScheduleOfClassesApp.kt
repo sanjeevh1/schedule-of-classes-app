@@ -19,7 +19,10 @@ import my.soc.rutgersscheduleofclasses.ui.state.CoursesUiState
 import my.soc.rutgersscheduleofclasses.ui.state.CoursesViewModel
 import my.soc.rutgersscheduleofclasses.ui.theme.RutgersScheduleOfClassesTheme
 
-//Displays the prompt and results
+/**
+ * Displays the app UI
+ * @param modifier Modifier to apply to the app
+ */
 @Composable
 fun ScheduleOfClassesApp(modifier: Modifier = Modifier) {
     val coursesViewModel: CoursesViewModel = viewModel(factory = CoursesViewModel.Factory)
@@ -70,7 +73,9 @@ fun ScheduleOfClassesApp(modifier: Modifier = Modifier) {
     }
 }
 
-//Preview of app
+/**
+ * Preview of the app
+ */
 @Preview(showBackground = true)
 @Composable
 fun SOCAppPreview() {

@@ -2,7 +2,9 @@ package my.soc.rutgersscheduleofclasses.model.sectionData
 
 import kotlinx.serialization.Serializable
 
-//A data class for sections cross listed with another section
+/**
+ * A data class for sections cross listed with another section
+ */
 @Serializable
 data class CrossListedSection(
     val courseNumber: String? = null,

@@ -1,6 +1,8 @@
 package my.soc.rutgersscheduleofclasses.ui.state
 
-//Stores the values entered by the user
+/**
+ * Stores the values entered in the prompts
+ */
 data class PromptUiState(
     var year: String? = null,
     var term: String? = null,

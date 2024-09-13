@@ -19,7 +19,11 @@ import my.soc.rutgersscheduleofclasses.R
 import my.soc.rutgersscheduleofclasses.model.sectionData.MeetingTime
 import my.soc.rutgersscheduleofclasses.model.sectionData.Section
 
-//Lists sections
+/**
+ * Lists sections of a course
+ * @param sections A list of sections to display
+ * @param modifier The modifier to apply to the list
+ */
 @Composable
 fun SectionList(
     sections: List<Section>,
@@ -33,7 +37,11 @@ fun SectionList(
     }
 }
 
-//A box displaying the information for a given section
+/**
+ * A card displaying the information for a given section
+ * @param section The section for which info is displayed
+ * @param modifier The modifier to apply to the card
+ */
 @Composable
 fun SectionCard(
     section: Section,
@@ -64,7 +72,11 @@ fun SectionCard(
     }
 }
 
-//Header for section card
+/**
+ * Displays the main information for a section
+ * @param section the section for which to show info
+ * @param modifier The modifier to apply to the card
+ */
 @Composable
 fun SectionHeader(
     section: Section,
@@ -98,7 +110,11 @@ fun SectionHeader(
     }
 }
 
-//Lists meeting times for a given section
+/**
+ * Lists meeting times for a given section
+ * @param meetingTimes A list of meeting times to display
+ * @param modifier The modifier to apply to the list
+ */
 @Composable
 fun MeetingTimeList(
     meetingTimes: List<MeetingTime>,

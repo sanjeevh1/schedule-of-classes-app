@@ -1,7 +1,9 @@
 package my.soc.rutgersscheduleofclasses.model
 import kotlinx.serialization.Serializable
 
-//A data class for core codes that a course may satisfy
+/**
+ * A data class for core codes that a course may satisfy
+ */
 @Serializable
 data class CoreCode(
     val id: String? = null,

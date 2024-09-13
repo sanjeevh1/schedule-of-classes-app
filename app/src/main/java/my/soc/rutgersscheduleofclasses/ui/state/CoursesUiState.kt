@@ -1,6 +1,8 @@
 package my.soc.rutgersscheduleofclasses.ui.state
 
-//Data class to store the UI state of the courses
+/**
+ * A sealed interface that encapsulates the different states of the courses
+ */
 sealed interface CoursesUiState {
     data class Success(val courses: List<CourseCardState>) : CoursesUiState
     data object ConnectionError : CoursesUiState
