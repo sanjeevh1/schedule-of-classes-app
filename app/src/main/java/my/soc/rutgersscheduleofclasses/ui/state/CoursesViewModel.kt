@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import my.soc.rutgersscheduleofclasses.ScheduleOfClassesApplication
 import my.soc.rutgersscheduleofclasses.data.CourseRepository
+import my.soc.rutgersscheduleofclasses.model.Course
 import java.io.IOException
 
 /**
@@ -25,51 +26,53 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
     val classesUiState: StateFlow<ClassesUiState> = _classesUiState.asStateFlow()
 
     /**
+     * Updates the courseListState of the UI state
+     * @param courseListState The courseListState of the updated UI state
+     */
+    private fun updateCourseListState(courseListState: CourseListState) {
+        _classesUiState.update { currentState ->
+            currentState.copy(courseListState = courseListState)
+        }
+    }
+
+
+    /**
+     * Retrieves course list based on UI state
+     * @return a list of courses with the given parameters, or null if any parameter is null
+     */
+    private suspend fun getCourses(): List<Course>? {
+        return courseRepository.getCourses(
+            year = _classesUiState.value.year,
+            term = _classesUiState.value.term,
+            campus = _classesUiState.value.campus,
+            subject = _classesUiState.value.subject,
+            level = _classesUiState.value.level
+        )
+    }
+
+    /**
      * Sets course list to display based on prompts entered
      */
     fun setCourses() {
         viewModelScope.launch {
-            _classesUiState.update { currentState ->
-                currentState.copy(courseListState = CourseListState.Loading)
-            }
+            updateCourseListState(CourseListState.Loading)
             try {
-                val courses = courseRepository.getCourses(
-                    year = _classesUiState.value.year,
-                    term = _classesUiState.value.term,
-                    campus = _classesUiState.value.campus,
-                    subject = _classesUiState.value.subject,
-                    level = _classesUiState.value.level
-                )
+                val courses = getCourses()
                 if(courses == null) {
-                    _classesUiState.update { currentState ->
-                        currentState.copy(courseListState = CourseListState.InvalidInput)
-                    }
+                    updateCourseListState(CourseListState.InvalidInput)
                 } else if (courses.isEmpty()) {
-                    _classesUiState.update { currentState ->
-                        currentState.copy(courseListState = CourseListState.NoCoursesFound)
-                    }
+                    updateCourseListState(CourseListState.NoCoursesFound)
                 } else {
                     val courseCards: MutableList<CourseCardState> = mutableListOf()
                     for(course in courses) {
-                        courseCards.add(
-                            CourseCardState(
-                                course = course,
-                                expanded = false
-                            )
-                        )
+                        courseCards.add(CourseCardState(course = course))
                     }
-                    _classesUiState.update { currentState ->
-                        currentState.copy(courseListState = CourseListState.Success(courseCards))
-                    }
+                    updateCourseListState(CourseListState.Success(courseCards))
                 }
             } catch (e: IOException) {
-                _classesUiState.update { currentState ->
-                    currentState.copy(courseListState = CourseListState.ConnectionError)
-                }
+                updateCourseListState(CourseListState.ConnectionError)
             } catch (e: Exception) {
-                _classesUiState.update { currentState ->
-                    currentState.copy(courseListState = CourseListState.NoCoursesFound)
-                }
+                updateCourseListState(CourseListState.NoCoursesFound)
             }
         }
     }

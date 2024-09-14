@@ -7,5 +7,5 @@ import my.soc.rutgersscheduleofclasses.model.Course
  */
 data class CourseCardState(
     val course: Course,
-    var expanded: Boolean
+    val expanded: Boolean = false
 )
