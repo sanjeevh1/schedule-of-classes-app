@@ -42,7 +42,6 @@ import my.soc.rutgersscheduleofclasses.ui.state.ClassesUiState
 /**
  * A card prompting the user for input
  * @param classesUiState The current state of the prompt
- * @param courseListState The current state of the courses
  * @param onYearResponse The function to call when the year is selected
  * @param onTermResponse The function to call when the term is selected
  * @param onCampusResponse The function to call when the campus is selected
