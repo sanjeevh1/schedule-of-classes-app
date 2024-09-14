@@ -35,7 +35,6 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
         }
     }
 
-
     /**
      * Retrieves course list based on UI state
      * @return a list of courses with the given parameters, or null if any parameter is null
@@ -54,8 +53,8 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
      * Sets course list to display based on prompts entered
      */
     fun setCourses() {
+        updateCourseListState(CourseListState.Loading)
         viewModelScope.launch {
-            updateCourseListState(CourseListState.Loading)
             try {
                 val courses = getCourses()
                 if(courses == null) {
@@ -130,12 +129,25 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
     /**
      * Updates the expand status of a course
      * @param index the index of the course to be updated
+     * @throws IllegalStateException if the courses are not set
+     * @throws IllegalArgumentException if the index is out of bounds of the courses list
      */
     fun updateExpand(index: Int) {
-        val courseListState = classesUiState.value.courseListState as CourseListState.Success
+        val courseListState = try {
+            classesUiState.value.courseListState as CourseListState.Success
+        } catch(e: ClassCastException) {
+            throw IllegalStateException("Courses not set.")
+        }
+
         val courses = courseListState.courses
         val newCourses = courses.toMutableList()
-        val courseCardInfo = courses[index]
+
+        val courseCardInfo = try {
+            courses[index]
+        } catch(e: IndexOutOfBoundsException) {
+            throw IllegalArgumentException("Course index out of bounds")
+        }
+
         val expanded = courseCardInfo.expanded
         val newCourseCardInfo = courseCardInfo.copy(expanded = !expanded)
         newCourses[index] = newCourseCardInfo
@@ -156,5 +168,4 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
             }
         }
     }
-
 }
