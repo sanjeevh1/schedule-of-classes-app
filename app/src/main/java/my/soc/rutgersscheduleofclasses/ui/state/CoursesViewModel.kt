@@ -157,7 +157,7 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
     }
 
     /**
-     * A companion object to create an instance of CoursesViewModel
+     * A companion object to create an instance of CoursesViewModel from ScheduleOfClassesApplication
      */
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
