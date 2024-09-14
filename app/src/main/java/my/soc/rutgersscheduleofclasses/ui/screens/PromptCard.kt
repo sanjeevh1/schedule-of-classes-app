@@ -36,13 +36,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.toSize
 import my.soc.rutgersscheduleofclasses.R
 import my.soc.rutgersscheduleofclasses.data.PromptRepository
-import my.soc.rutgersscheduleofclasses.ui.state.CoursesUiState
-import my.soc.rutgersscheduleofclasses.ui.state.PromptUiState
+import my.soc.rutgersscheduleofclasses.ui.state.CourseListState
+import my.soc.rutgersscheduleofclasses.ui.state.ClassesUiState
 
 /**
  * A card prompting the user for input
- * @param promptUiState The current state of the prompt
- * @param coursesUiState The current state of the courses
+ * @param classesUiState The current state of the prompt
+ * @param courseListState The current state of the courses
  * @param onYearResponse The function to call when the year is selected
  * @param onTermResponse The function to call when the term is selected
  * @param onCampusResponse The function to call when the campus is selected
@@ -53,8 +53,7 @@ import my.soc.rutgersscheduleofclasses.ui.state.PromptUiState
  */
 @Composable
 fun PromptCard(
-    promptUiState: PromptUiState,
-    coursesUiState: CoursesUiState,
+    classesUiState: ClassesUiState,
 
     onYearResponse: (String) -> Unit,
     onTermResponse: (String) -> Unit,
@@ -65,8 +64,8 @@ fun PromptCard(
     onClickButton: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val enabled = coursesUiState != CoursesUiState.Loading
-    val hasError = coursesUiState == CoursesUiState.InvalidInput
+    val enabled = classesUiState.courseListState != CourseListState.Loading
+    val hasError = classesUiState.courseListState == CourseListState.InvalidInput
     Card(
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.scarlet)),
         modifier = modifier
@@ -81,7 +80,7 @@ fun PromptCard(
                 enabled = enabled,
                 showError = hasError,
                 labelRes = R.string.year,
-                value = promptUiState.year,
+                value = classesUiState.year,
                 map = PromptRepository.getYearMap(),
                 onResponse = onYearResponse,
                 modifier = Modifier.fillMaxWidth()
@@ -90,7 +89,7 @@ fun PromptCard(
                 enabled = enabled,
                 showError = hasError,
                 labelRes = R.string.term,
-                value = PromptRepository.terms[promptUiState.term],
+                value = PromptRepository.terms[classesUiState.term],
                 map = PromptRepository.terms,
                 onResponse = onTermResponse,
                 modifier = Modifier.fillMaxWidth()
@@ -99,7 +98,7 @@ fun PromptCard(
                 enabled = enabled,
                 showError = hasError,
                 labelRes = R.string.campus,
-                value = PromptRepository.campuses[promptUiState.campus],
+                value = PromptRepository.campuses[classesUiState.campus],
                 map = PromptRepository.campuses,
                 onResponse = onCampusResponse,
                 modifier = Modifier.fillMaxWidth()
@@ -108,7 +107,7 @@ fun PromptCard(
                 enabled = enabled,
                 showError = hasError,
                 labelRes = R.string.level,
-                value = PromptRepository.levels[promptUiState.level],
+                value = PromptRepository.levels[classesUiState.level],
                 map = PromptRepository.levels,
                 onResponse = onLevelResponse,
                 modifier = Modifier.fillMaxWidth()
@@ -117,7 +116,7 @@ fun PromptCard(
                 enabled = enabled,
                 showError = hasError,
                 labelRes = R.string.subject,
-                value = PromptRepository.subjects[promptUiState.subject],
+                value = PromptRepository.subjects[classesUiState.subject],
                 map = PromptRepository.subjects,
                 onResponse = onSubjectResponse,
                 modifier = Modifier.fillMaxWidth()
@@ -237,8 +236,7 @@ fun SearchButton(
 @Composable
 fun PromptCardPreview() {
     PromptCard(
-        promptUiState = PromptUiState(),
-        coursesUiState = CoursesUiState.Default,
+        classesUiState = ClassesUiState(),
         onYearResponse = {},
         onTermResponse = {},
         onCampusResponse = {},

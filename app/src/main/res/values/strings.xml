@@ -21,11 +21,11 @@
     <string name="course_expand">"Show sections for %1$s"</string>
     <string name="course_hide">"Hide sections for %1$s"</string>
 
-
     <!--SectionBox strings-->
     <string name="section_index">Index: %1$s</string>
     <string name="section_instructors">Instructors: %1$s</string>
     <string name="section_meeting_times">Meeting Times:</string>
+    <string name="section_no_meeting_times">N/A</string>
 
     <!--courseScreen strings-->
     <string name="connection_error">unable to connect</string>

@@ -122,11 +122,16 @@ fun MeetingTimeList(
 ) {
     Column(modifier = modifier) {
         Text(text = stringResource(R.string.section_meeting_times))
+        var hasMeetingTimes = false
         meetingTimes.forEach { meetingTime ->
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
             if (meetingTime.toString() != "") {
                 Text(text = meetingTime.toString())
+                hasMeetingTimes = true
             }
+        }
+        if(!hasMeetingTimes) {
+            Text(text = stringResource(R.string.section_no_meeting_times))
         }
     }
 }

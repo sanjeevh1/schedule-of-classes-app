@@ -15,7 +15,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import my.soc.rutgersscheduleofclasses.R
-import my.soc.rutgersscheduleofclasses.ui.state.CoursesUiState
+import my.soc.rutgersscheduleofclasses.ui.state.CourseListState
 import my.soc.rutgersscheduleofclasses.ui.state.CoursesViewModel
 import my.soc.rutgersscheduleofclasses.ui.theme.RutgersScheduleOfClassesTheme
 
@@ -26,8 +26,7 @@ import my.soc.rutgersscheduleofclasses.ui.theme.RutgersScheduleOfClassesTheme
 @Composable
 fun ScheduleOfClassesApp(modifier: Modifier = Modifier) {
     val coursesViewModel: CoursesViewModel = viewModel(factory = CoursesViewModel.Factory)
-    val coursesUiState by coursesViewModel.coursesUiState.collectAsState()
-    val promptUiState by coursesViewModel.promptUiState.collectAsState()
+    val classesUiState by coursesViewModel.classesUiState.collectAsState()
 
     LazyColumn(
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
@@ -37,8 +36,7 @@ fun ScheduleOfClassesApp(modifier: Modifier = Modifier) {
     ) {
         item {
             PromptCard(
-                promptUiState = promptUiState,
-                coursesUiState = coursesUiState,
+                classesUiState = classesUiState,
 
                 onYearResponse = coursesViewModel::updateYear,
                 onTermResponse = coursesViewModel::updateTerm,
@@ -49,8 +47,8 @@ fun ScheduleOfClassesApp(modifier: Modifier = Modifier) {
                 onClickButton = coursesViewModel::setCourses,
             )
         }
-        if(coursesUiState is CoursesUiState.Success) {
-            itemsIndexed((coursesUiState as CoursesUiState.Success).courses) { index, courseCardInfo ->
+        if(classesUiState.courseListState is CourseListState.Success) {
+            itemsIndexed((classesUiState.courseListState as CourseListState.Success).courses) { index, courseCardInfo ->
                 CourseCard(
                     course = courseCardInfo.course,
                     onClick = { coursesViewModel.updateExpand(index) },
@@ -61,11 +59,11 @@ fun ScheduleOfClassesApp(modifier: Modifier = Modifier) {
         }
         else {
             item {
-                when (coursesUiState) {
-                    CoursesUiState.Loading -> CircularProgressIndicator()
-                    CoursesUiState.ConnectionError -> ConnectionErrorScreen()
-                    CoursesUiState.InvalidInput -> InvalidInputScreen()
-                    CoursesUiState.NoCoursesFound -> NoCoursesFoundScreen()
+                when (classesUiState.courseListState) {
+                    CourseListState.Loading -> CircularProgressIndicator()
+                    CourseListState.ConnectionError -> ConnectionErrorScreen()
+                    CourseListState.InvalidInput -> InvalidInputScreen()
+                    CourseListState.NoCoursesFound -> NoCoursesFoundScreen()
                     else -> DefaultScreen()
                 }
             }

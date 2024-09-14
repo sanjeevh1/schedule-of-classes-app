@@ -20,32 +20,34 @@ import java.io.IOException
  */
 class CoursesViewModel(private val courseRepository: CourseRepository) : ViewModel() {
 
-    //stores the UI state for the course list
-    private var _coursesUiState: MutableStateFlow<CoursesUiState> = MutableStateFlow(CoursesUiState.Default)
-    var coursesUiState: StateFlow<CoursesUiState> = _coursesUiState.asStateFlow()
-
-    //stores the UI state for the prompts
-    private val _promptUiState = MutableStateFlow(PromptUiState())
-    val promptUiState: StateFlow<PromptUiState> = _promptUiState.asStateFlow()
+    //stores the UI state of the app
+    private val _classesUiState = MutableStateFlow(ClassesUiState())
+    val classesUiState: StateFlow<ClassesUiState> = _classesUiState.asStateFlow()
 
     /**
-     * Sets coursesUiState based on data from API and promptUiState
+     * Sets course list to display based on prompts entered
      */
     fun setCourses() {
         viewModelScope.launch {
-            _coursesUiState.update { CoursesUiState.Loading }
+            _classesUiState.update { currentState ->
+                currentState.copy(courseListState = CourseListState.Loading)
+            }
             try {
                 val courses = courseRepository.getCourses(
-                    year = _promptUiState.value.year,
-                    term = _promptUiState.value.term,
-                    campus = _promptUiState.value.campus,
-                    subject = _promptUiState.value.subject,
-                    level = _promptUiState.value.level
+                    year = _classesUiState.value.year,
+                    term = _classesUiState.value.term,
+                    campus = _classesUiState.value.campus,
+                    subject = _classesUiState.value.subject,
+                    level = _classesUiState.value.level
                 )
                 if(courses == null) {
-                    _coursesUiState.update { CoursesUiState.InvalidInput }
+                    _classesUiState.update { currentState ->
+                        currentState.copy(courseListState = CourseListState.InvalidInput)
+                    }
                 } else if (courses.isEmpty()) {
-                    _coursesUiState.update { CoursesUiState.NoCoursesFound }
+                    _classesUiState.update { currentState ->
+                        currentState.copy(courseListState = CourseListState.NoCoursesFound)
+                    }
                 } else {
                     val courseCards: MutableList<CourseCardState> = mutableListOf()
                     for(course in courses) {
@@ -56,12 +58,18 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
                             )
                         )
                     }
-                    _coursesUiState.update { CoursesUiState.Success(courseCards) }
+                    _classesUiState.update { currentState ->
+                        currentState.copy(courseListState = CourseListState.Success(courseCards))
+                    }
                 }
             } catch (e: IOException) {
-                _coursesUiState.update { CoursesUiState.ConnectionError }
+                _classesUiState.update { currentState ->
+                    currentState.copy(courseListState = CourseListState.ConnectionError)
+                }
             } catch (e: Exception) {
-                _coursesUiState.update { CoursesUiState.NoCoursesFound }
+                _classesUiState.update { currentState ->
+                    currentState.copy(courseListState = CourseListState.NoCoursesFound)
+                }
             }
         }
     }
@@ -71,7 +79,7 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
      * @param year The year to which the UI state is updated
      */
     fun updateYear(year: String) {
-        _promptUiState.update { currentState ->
+        _classesUiState.update { currentState ->
             currentState.copy(year = year)
         }
     }
@@ -81,7 +89,7 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
      * @param term The term to which the UI state is updated
      */
     fun updateTerm(term: String) {
-        _promptUiState.update { currentState ->
+        _classesUiState.update { currentState ->
             currentState.copy(term = term)
         }
     }
@@ -91,7 +99,7 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
      * @param campus The campus to which the UI state is updated
      */
     fun updateCampus(campus: String) {
-        _promptUiState.update { currentState ->
+        _classesUiState.update { currentState ->
             currentState.copy(campus = campus)
         }
     }
@@ -101,7 +109,7 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
      * @param level The level to which the UI state is updated
      */
     fun updateLevel(level: String) {
-        _promptUiState.update { currentState ->
+        _classesUiState.update { currentState ->
             currentState.copy(level = level)
         }
     }
@@ -111,7 +119,7 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
      * @param subject The subject to which the UI state is updated
      */
     fun updateSubject(subject: String) {
-        _promptUiState.update { currentState ->
+        _classesUiState.update { currentState ->
             currentState.copy(subject = subject)
         }
     }
@@ -121,14 +129,16 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
      * @param index the index of the course to be updated
      */
     fun updateExpand(index: Int) {
-        val stateObject = coursesUiState.value as CoursesUiState.Success
-        val courses = stateObject.courses
+        val courseListState = classesUiState.value.courseListState as CourseListState.Success
+        val courses = courseListState.courses
         val newCourses = courses.toMutableList()
         val courseCardInfo = courses[index]
         val expanded = courseCardInfo.expanded
         val newCourseCardInfo = courseCardInfo.copy(expanded = !expanded)
         newCourses[index] = newCourseCardInfo
-        _coursesUiState.update { CoursesUiState.Success(newCourses) }
+        _classesUiState.update { currentState ->
+            currentState.copy(courseListState = CourseListState.Success(newCourses))
+        }
     }
 
     /**
