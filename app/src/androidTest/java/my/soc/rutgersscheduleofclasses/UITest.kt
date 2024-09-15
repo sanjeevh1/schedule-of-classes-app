@@ -5,16 +5,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import my.soc.rutgersscheduleofclasses.data.CourseRepository
 import my.soc.rutgersscheduleofclasses.data.PromptRepository
 import my.soc.rutgersscheduleofclasses.ui.screens.ScheduleOfClassesApp
-import my.soc.rutgersscheduleofclasses.ui.state.CourseListState
 import my.soc.rutgersscheduleofclasses.ui.state.CoursesViewModel
 import my.soc.rutgersscheduleofclasses.ui.theme.RutgersScheduleOfClassesTheme
 import org.junit.Rule
@@ -44,6 +47,21 @@ class UITest {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
+            }
+        }
+    }
+
+    /**
+     * Waits for courses to be set
+     */
+    private suspend fun waitForCourses() {
+        var loading = true
+        while(loading) {
+            delay(100)
+            try {
+                composeTestRule.onNodeWithText("Search").assertIsNotEnabled()
+            } catch(e: AssertionError) {
+                loading = false
             }
         }
     }
@@ -157,10 +175,11 @@ class UITest {
      * Tests invalid input scenario
      */
     @Test
-    fun searchButton_clickWithoutInput_showsError() {
+    fun searchButton_clickWithoutInput_showsError() = runTest {
         setComposeTestRule(NullCourseRepository::class)
         composeTestRule.onNodeWithText("Search").assertExists()
         composeTestRule.onNodeWithText("Search").performClick()
+        waitForCourses()
         composeTestRule.onNodeWithText("Please enter all fields").assertExists()
     }
 
@@ -168,10 +187,11 @@ class UITest {
      * Tests for IOException
      */
     @Test
-    fun searchButton_clickWithIoException_showsConnectionError() {
+    fun searchButton_clickWithIoException_showsConnectionError() = runTest {
         setComposeTestRule(IOExceptionCourseRepository::class)
         composeTestRule.onNodeWithText("Search").assertExists()
         composeTestRule.onNodeWithText("Search").performClick()
+        waitForCourses()
         composeTestRule.onNodeWithContentDescription("unable to connect").assertExists()
         composeTestRule.onNodeWithText("unable to connect").assertExists()
     }
@@ -180,10 +200,11 @@ class UITest {
      * Tests for no courses
      */
     @Test
-    fun searchButton_clickWithNoCourses_showsNoCoursesFound() {
+    fun searchButton_clickWithNoCourses_showsNoCoursesFound() = runTest {
         setComposeTestRule(EmptyCourseRepository::class)
         composeTestRule.onNodeWithText("Search").assertExists()
         composeTestRule.onNodeWithText("Search").performClick()
+        waitForCourses()
         composeTestRule.onNodeWithText("No courses found").assertExists()
     }
 
@@ -195,8 +216,12 @@ class UITest {
         setComposeTestRule(SuccessCourseRepository::class)
         composeTestRule.onNodeWithText("Search").assertExists()
         composeTestRule.onNodeWithText("Search").performClick()
-        delay(1000)
+        waitForCourses()
         //Tests header of CourseCard
-        composeTestRule.onNodeWithText("Course 1").assertExists()
+        composeTestRule.onNodeWithTag("lazyColumnTag").performScrollToNode(hasContentDescription("Show sections for Title"))
+        composeTestRule.onNodeWithText("Title").assertExists()
+        composeTestRule.onNodeWithContentDescription("Show sections for Title").performClick()
+        composeTestRule.onNodeWithContentDescription("Hide sections for Title").assertExists()
+        composeTestRule.onNodeWithTag("lazyColumnTag").performScrollToNode(hasText("Section #: 1"))
     }
 }
