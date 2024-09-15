@@ -131,6 +131,8 @@ class CoursesViewModel(private val courseRepository: CourseRepository) : ViewMod
      * @param index the index of the course to be updated
      * @throws IllegalStateException if the courses are not set
      * @throws IllegalArgumentException if the index is out of bounds of the courses list
+     * @precondition classesUiState.value.courseListState is CourseListState.Success
+     * @precondition index is in bounds of courses list
      */
     fun updateExpand(index: Int) {
         val courseListState = try {

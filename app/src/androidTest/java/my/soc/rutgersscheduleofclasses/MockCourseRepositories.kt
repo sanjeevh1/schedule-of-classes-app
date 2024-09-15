@@ -2,6 +2,9 @@ package my.soc.rutgersscheduleofclasses
 
 import my.soc.rutgersscheduleofclasses.data.CourseRepository
 import my.soc.rutgersscheduleofclasses.model.Course
+import my.soc.rutgersscheduleofclasses.model.CreditsObject
+import my.soc.rutgersscheduleofclasses.model.sectionData.MeetingTime
+import my.soc.rutgersscheduleofclasses.model.sectionData.Section
 import java.io.IOException
 
 /**
@@ -31,6 +34,74 @@ class SuccessCourseRepository: CourseRepository {
             Course(
                 openSections = 2,
                 title = "Course 2"
+            ),
+            Course(
+                title = "Title",
+                courseString = "00:000:000",
+                creditsObject = CreditsObject(
+                    description = "0.0 credits"
+                ),
+                openSections = 1,
+                sections = listOf(
+                    Section(
+                        openStatus = false,
+                        number = "0",
+                        openStatusText = "Closed",
+                        index = "00000",
+                        instructorsText = "SMITH, JOHN",
+                        meetingTimes = listOf(
+                            MeetingTime(
+                                roomNumber = "000",
+                                campusAbbrev = "XYZ",
+                                meetingDay = "M",
+                                startTime = "10:10",
+                                endTime = "12:12",
+                                startTimeMilitary = "1010",
+                                endTimeMilitary = "1212",
+                                buildingCode = "WX"
+                            ),
+                            MeetingTime(
+                                roomNumber = "000",
+                                campusAbbrev = "XYZ",
+                                meetingDay = "M",
+                                startTime = "10:10",
+                                endTime = "12:12",
+                                startTimeMilitary = "1010",
+                                endTimeMilitary = "1212",
+                                buildingCode = "YZ"
+                            )
+                        )
+                    ),
+                    Section(
+                        openStatus = true,
+                        number = "1",
+                        openStatusText = "OPEN",
+                        index = "11111",
+                        instructorsText = "SMITH, JOHN",
+                        meetingTimes = listOf(
+                            MeetingTime(
+                                roomNumber = "000",
+                                campusAbbrev = "XYZ",
+                                meetingDay = "M",
+                                startTime = "10:10",
+                                endTime = "12:12",
+                                startTimeMilitary = "1010",
+                                endTimeMilitary = "1212",
+                                buildingCode = "AB"
+                            ),
+                            MeetingTime(
+                                roomNumber = "000",
+                                campusAbbrev = "XYZ",
+                                meetingDay = "M",
+                                startTime = "10:10",
+                                endTime = "12:12",
+                                startTimeMilitary = "1010",
+                                endTimeMilitary = "1212",
+                                buildingCode = "CD"
+                            )
+                        )
+                    )
+                )
             )
         )
 

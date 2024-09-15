@@ -24,8 +24,10 @@ import my.soc.rutgersscheduleofclasses.ui.theme.RutgersScheduleOfClassesTheme
  * @param modifier Modifier to apply to the app
  */
 @Composable
-fun ScheduleOfClassesApp(modifier: Modifier = Modifier) {
-    val coursesViewModel: CoursesViewModel = viewModel(factory = CoursesViewModel.Factory)
+fun ScheduleOfClassesApp(
+    modifier: Modifier = Modifier,
+    coursesViewModel: CoursesViewModel = viewModel(factory = CoursesViewModel.Factory)
+) {
     val classesUiState by coursesViewModel.classesUiState.collectAsState()
 
     LazyColumn(

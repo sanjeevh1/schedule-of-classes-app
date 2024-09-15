@@ -38,7 +38,7 @@ class CoursesViewModelTest {
         val coursesListState = classesUiState.value.courseListState
         assert(coursesListState is CourseListState.Success)
         val courses = (coursesListState as CourseListState.Success).courses
-        assertEquals(2, courses.size)
+        assertEquals(3, courses.size)
         assertEquals(1, courses[0].course.openSections)
         assertEquals("Course 1", courses[0].course.title)
         assert(!courses[0].expanded)
@@ -188,7 +188,7 @@ class CoursesViewModelTest {
             delay(100)
         }
         assertThrows(IllegalArgumentException::class.java) {
-            successViewModel.updateExpand(2)
+            successViewModel.updateExpand(3)
         }
     }
 
