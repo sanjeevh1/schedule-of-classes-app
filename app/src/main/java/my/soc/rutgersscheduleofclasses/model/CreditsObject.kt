@@ -6,6 +6,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class CreditsObject(
-    val code: String? = null,
     val description: String = ""
 )

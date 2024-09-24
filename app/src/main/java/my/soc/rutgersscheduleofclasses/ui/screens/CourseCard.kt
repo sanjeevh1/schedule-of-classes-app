@@ -3,9 +3,7 @@ package my.soc.rutgersscheduleofclasses.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
@@ -25,8 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import my.soc.rutgersscheduleofclasses.R
 import my.soc.rutgersscheduleofclasses.model.Course
 import my.soc.rutgersscheduleofclasses.model.CreditsObject
-import my.soc.rutgersscheduleofclasses.model.sectionData.MeetingTime
-import my.soc.rutgersscheduleofclasses.model.sectionData.Section
+import my.soc.rutgersscheduleofclasses.model.MeetingTime
+import my.soc.rutgersscheduleofclasses.model.Section
 
 /**
  * A card displaying the information for a given course

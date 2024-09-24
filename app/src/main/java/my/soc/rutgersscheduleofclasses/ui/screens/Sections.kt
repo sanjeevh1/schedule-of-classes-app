@@ -16,8 +16,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import my.soc.rutgersscheduleofclasses.R
-import my.soc.rutgersscheduleofclasses.model.sectionData.MeetingTime
-import my.soc.rutgersscheduleofclasses.model.sectionData.Section
+import my.soc.rutgersscheduleofclasses.model.MeetingTime
+import my.soc.rutgersscheduleofclasses.model.Section
 
 /**
  * Lists sections of a course

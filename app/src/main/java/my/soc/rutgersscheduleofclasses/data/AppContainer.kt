@@ -20,9 +20,12 @@ class DefaultAppContainer() : AppContainer {
     //Base URL to access courses
     private val baseUrl = "https://classes.rutgers.edu/"
 
+    //Json val used to build Retrofit object
+    private val json = Json { ignoreUnknownKeys = true }
+
     //Retrofit object used to parse JSON data
     private val retrofit: Retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseUrl)
         .build()
 

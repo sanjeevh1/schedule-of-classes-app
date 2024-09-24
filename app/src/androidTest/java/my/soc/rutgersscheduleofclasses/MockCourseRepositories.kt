@@ -3,8 +3,8 @@ package my.soc.rutgersscheduleofclasses
 import my.soc.rutgersscheduleofclasses.data.CourseRepository
 import my.soc.rutgersscheduleofclasses.model.Course
 import my.soc.rutgersscheduleofclasses.model.CreditsObject
-import my.soc.rutgersscheduleofclasses.model.sectionData.MeetingTime
-import my.soc.rutgersscheduleofclasses.model.sectionData.Section
+import my.soc.rutgersscheduleofclasses.model.MeetingTime
+import my.soc.rutgersscheduleofclasses.model.Section
 import java.io.IOException
 
 /**

@@ -1,4 +1,4 @@
-package my.soc.rutgersscheduleofclasses.model.sectionData
+package my.soc.rutgersscheduleofclasses.model
 import my.soc.rutgersscheduleofclasses.data.PromptRepository.daysOfTheWeek
 import kotlinx.serialization.Serializable
 
@@ -7,17 +7,11 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class MeetingTime(
-    val campusLocation: String? = null,
     val roomNumber: String = "",
     val campusAbbrev: String = "",
-    val campusName: String? = "",
     val startTimeMilitary: String = "",
     val buildingCode: String = "",
-    val meetingModeDesc: String? = null,
     val endTimeMilitary: String = "",
-    val meetingModeCode: String? = null,
-    val baClassHours: String? = null,
-    val pmCode: String = "",
     val meetingDay: String = "",
     val startTime: String = "",
     val endTime: String = ""
@@ -44,3 +38,4 @@ data class MeetingTime(
         return "$day $start $startCode - $end $endCode\nLocation: $buildingCode-$roomNumber ($campusAbbrev)"
     }
 }
+

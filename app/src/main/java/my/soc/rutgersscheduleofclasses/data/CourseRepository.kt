@@ -27,6 +27,7 @@ interface CourseRepository {
 
 /**
  * A class for retrieving a list of courses from the API
+ * @param courseApiService The API service to use to get courses
  */
 class NetworkCourseRepository(
     private val courseApiService: CourseApiService
