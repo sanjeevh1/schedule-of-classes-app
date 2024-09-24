@@ -4,15 +4,23 @@ import kotlinx.serialization.Serializable
 
 /**
  * A data class to describe the times when a section meets
+ * @param roomNumber the room number of the meeting
+ * @param buildingCode the building code of the meeting
+ * @param campusAbbrev the campus abbreviation of the meeting
+ * @param meetingDay the day of the week of the meeting
+ * @param startTimeMilitary the start time of the meeting in military time
+ * @param endTimeMilitary the end time of the meeting in military time
+ * @param startTime the start time of the meeting in 12-hour format
+ * @param endTime the end time of the meeting in 12-hour format
  */
 @Serializable
 data class MeetingTime(
     val roomNumber: String = "",
-    val campusAbbrev: String = "",
-    val startTimeMilitary: String = "",
     val buildingCode: String = "",
-    val endTimeMilitary: String = "",
+    val campusAbbrev: String = "",
     val meetingDay: String = "",
+    val startTimeMilitary: String = "",
+    val endTimeMilitary: String = "",
     val startTime: String = "",
     val endTime: String = ""
 ) {

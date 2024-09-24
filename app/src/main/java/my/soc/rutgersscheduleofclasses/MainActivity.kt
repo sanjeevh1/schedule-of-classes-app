@@ -15,6 +15,10 @@ import my.soc.rutgersscheduleofclasses.ui.theme.RutgersScheduleOfClassesTheme
  * Entry point for the app
  */
 class MainActivity : ComponentActivity() {
+    /**
+     * Sets up the app.
+     * @param savedInstanceState used to call the superclass onCreate method
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

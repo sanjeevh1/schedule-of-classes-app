@@ -18,6 +18,7 @@ import java.io.IOException
 
 /**
  * A ViewModel to store and interact with the UI state
+ * @param courseRepository The repository to retrieve courses from when search is pressed.
  */
 class CoursesViewModel(private val courseRepository: CourseRepository) : ViewModel() {
 
